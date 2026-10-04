@@ -1,0 +1,10 @@
+{
+  "name": "plaxus-m25-dashboard",
+  "version": "2.0.0",
+  "private": true,
+  "type": "module",
+  "description": "PLAXUS M25 Studio AB204 dashboard with a shared cloud backend (Netlify Functions + Netlify Blobs)",
+  "dependencies": {
+    "@netlify/blobs": "^10.0.0"
+  }
+}
