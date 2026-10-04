@@ -1,0 +1,3175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <!-- LOCKED DESKTOP CANVAS: MOBILE AND PC DISPLAY THE EXACT SAME 3-COLUMN LAYOUT -->
+  <meta name="viewport" content="width=1380, initial-scale=0.35, minimum-scale=0.2, maximum-scale=2.5, user-scalable=yes" />
+  <title>PLAXUS M25 — Studio AB204 Editorial Monograph</title>
+
+  <!-- Google & Editorial Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Inter:wght@300;400;500;600;700;800&family=Italiana&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@600;700;800;900&family=Unbounded:wght@400;600;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    @font-face { font-family: 'Aloha Magazine'; src: local('Aloha Magazine'), local('AlohaMagazine'); font-display: swap; }
+    @font-face { font-family: 'Stinker'; src: local('Stinker'); font-display: swap; }
+    @font-face { font-family: 'Biomorph'; src: local('Biomorph'); font-display: swap; }
+    @font-face { font-family: 'Vaqoeng'; src: local('Vaqoeng'); font-display: swap; }
+
+    :root {
+      --bg: #030408;
+      --card-bg: rgba(16, 19, 29, 0.78);
+      --card-elevated: rgba(24, 28, 42, 0.92);
+      --card-border: rgba(229, 115, 88, 0.22);
+      --border-cyan: rgba(56, 189, 248, 0.32);
+      --accent: #e57358;
+      --accent-warm: #f3a075;
+      --accent-glow: rgba(229, 115, 88, 0.4);
+      --cyan: #38bdf8;
+      --text-1: #ffffff;
+      --text-2: #94a3b8;
+      --text-3: #64748b;
+      --grid-dot: rgba(255, 255, 255, 0.07);
+
+      --font-aloha: 'Aloha Magazine', 'Italiana', 'Playfair Display', serif;
+      --font-stinker: 'Stinker', 'Syne', sans-serif;
+      --font-biomorph: 'Biomorph', 'Space Mono', monospace;
+      --font-vaqoeng: 'Vaqoeng', 'Unbounded', 'Cinzel Decorative', sans-serif;
+      --font-serif: 'Playfair Display', serif;
+      --font-body: 'Inter', -apple-system, sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+    /* HARD LOCKED PC WIDTH ENGINE (NO MOBILE COLLAPSING) */
+    html {
+      width: 100%;
+      min-width: 1380px;
+      overflow-x: auto;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text-1);
+      font-family: var(--font-body);
+      min-height: 100vh;
+      min-width: 1380px;
+      width: 100%;
+      line-height: 1.5;
+      letter-spacing: -0.012em;
+      cursor: auto;
+    }
+
+    #cursor-dot {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 8px;
+      height: 8px;
+      background-color: #ffffff;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 10000;
+      transform: translate(-50%, -50%);
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+      display: none;
+    }
+
+    #cursor-ring {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 36px;
+      height: 36px;
+      border: 1.5px solid rgba(229, 115, 88, 0.6);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      display: none;
+      transition: width 0.15s, height 0.15s, border-color 0.15s, background-color 0.15s;
+    }
+
+    @media (min-width: 1024px) {
+      body, button, input, select, textarea, a { cursor: none !important; }
+      #cursor-dot, #cursor-ring { display: block; }
+    }
+
+    body.cursor-hovering #cursor-ring {
+      width: 54px;
+      height: 54px;
+      border-color: var(--cyan);
+      background-color: rgba(56, 189, 248, 0.05);
+    }
+
+    body.cursor-hovering #cursor-dot {
+      background-color: var(--accent);
+    }
+
+    #cursor-spotlight {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+      background: radial-gradient(650px circle at var(--x, 50%) var(--y, 50%), rgba(229, 115, 88, 0.12), rgba(56, 189, 248, 0.03) 40%, transparent 80%);
+    }
+
+    .mag-canvas-dots {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image: radial-gradient(var(--grid-dot) 1px, transparent 1px);
+      background-size: 22px 22px;
+      z-index: 0;
+    }
+
+    #custom-user-bg {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-size: cover;
+      background-position: center;
+      opacity: 0.14;
+      filter: blur(24px) brightness(0.45);
+      z-index: 0;
+      transition: background-image 0.6s ease;
+    }
+
+    .viewport-container {
+      position: relative;
+      z-index: 2;
+      width: 1380px;
+      margin: 0 auto;
+      padding: 24px 20px 80px;
+    }
+
+    .cr-executive-banner {
+      background: linear-gradient(90deg, #991b1b, #c2410c, #ea580c);
+      color: #fff;
+      padding: 10px 24px;
+      display: none;
+      justify-content: space-between;
+      align-items: center;
+      font-family: var(--font-biomorph);
+      font-size: 0.8rem;
+      letter-spacing: 1px;
+      clip-path: polygon(10px 0, 100% 0, calc(100% - 10px) 100%, 0 100%);
+      margin-bottom: 14px;
+      box-shadow: 0 4px 20px rgba(234, 88, 12, 0.4);
+    }
+
+    .mag-plate {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px));
+      backdrop-filter: blur(26px) saturate(180%);
+      box-shadow: 0 16px 45px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.3s ease, border-color 0.3s ease;
+    }
+
+    .mag-plate:hover {
+      border-color: rgba(229, 115, 88, 0.45);
+    }
+
+    .folio-tape {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--card-border);
+      margin-bottom: 14px;
+      font-family: var(--font-biomorph);
+      font-size: 0.7rem;
+      color: var(--text-2);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    /* Fixed Ribbons & Blinking Marquees */
+    .mag-ribbon {
+      background: rgba(16, 20, 32, 0.85);
+      border: 1px solid var(--card-border);
+      clip-path: polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%);
+      padding: 10px 20px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      backdrop-filter: blur(18px);
+      overflow: hidden;
+    }
+
+    .mag-ribbon.sub-ribbon {
+      background: rgba(229, 115, 88, 0.07);
+      border-color: rgba(229, 115, 88, 0.3);
+      margin-bottom: 20px;
+      clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 100%, 10px 100%);
+    }
+
+    .ribbon-tag {
+      font-family: var(--font-biomorph);
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--accent-warm);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      white-space: nowrap;
+    }
+
+    .pulsing-indicator {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #22c55e;
+      box-shadow: 0 0 10px #22c55e;
+      animation: pulseBlink 1.4s infinite ease-in-out;
+      flex-shrink: 0;
+    }
+
+    .pulsing-indicator.red {
+      background: #f43f5e;
+      box-shadow: 0 0 10px #f43f5e;
+    }
+
+    @keyframes pulseBlink {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.25; transform: scale(0.65); }
+    }
+
+    .ribbon-track { overflow: hidden; white-space: nowrap; flex: 1; position: relative; }
+
+    .marquee-text-flow {
+      display: inline-block;
+      font-size: 0.85rem;
+      color: #e2e8f0;
+      padding-left: 100%;
+      animation: marqueeScroll 42s linear infinite, textBlinkPulse 3s ease-in-out infinite;
+    }
+
+    .marquee-text-flow.radar {
+      animation: marqueeScroll 36s linear infinite, textBlinkPulse 2.2s ease-in-out infinite;
+      color: #fed7aa;
+      font-family: var(--font-stinker);
+    }
+
+    @keyframes marqueeScroll {
+      0% { transform: translate3d(0, 0, 0); }
+      100% { transform: translate3d(-100%, 0, 0); }
+    }
+
+    @keyframes textBlinkPulse {
+      0%, 100% { opacity: 1; filter: drop-shadow(0 0 8px rgba(229, 115, 88, 0.6)); }
+      50% { opacity: 0.35; filter: none; }
+    }
+
+    .mag-cover-spread {
+      display: grid;
+      grid-template-columns: 2.1fr 1fr;
+      gap: 24px;
+      margin-bottom: 28px;
+      padding-bottom: 28px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .cover-masthead { display: flex; flex-direction: column; justify-content: center; }
+
+    .cover-volume-tag {
+      font-family: var(--font-biomorph);
+      font-size: 0.78rem;
+      letter-spacing: 2px;
+      color: var(--accent-warm);
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .cover-title {
+      font-family: var(--font-vaqoeng);
+      font-size: 5.6rem;
+      font-weight: 900;
+      letter-spacing: 1px;
+      line-height: 0.95;
+      background: linear-gradient(180deg, #ffffff 35%, #e57358 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 12px;
+    }
+
+    .cover-lead {
+      font-family: var(--font-aloha);
+      font-size: 1.95rem;
+      font-style: italic;
+      color: #e2e8f0;
+      line-height: 1.25;
+    }
+
+    .cover-sidebar-chronometer {
+      background: linear-gradient(145deg, rgba(17, 21, 36, 0.85) 0%, rgba(9, 12, 20, 0.95) 100%);
+      border: 1px solid var(--card-border);
+      clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px));
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
+    }
+
+    .chrono-stamp-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+      font-family: var(--font-biomorph);
+      font-size: 0.7rem;
+      color: var(--cyan);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .chrono-display-large {
+      font-family: var(--font-biomorph);
+      font-size: 2.5rem;
+      font-weight: 800;
+      line-height: 1;
+      color: #fff;
+    }
+
+    .chrono-seconds { color: var(--accent); font-size: 1.4rem; font-weight: 700; }
+    .chrono-meridiem { font-size: 1rem; color: var(--cyan); margin-left: 6px; }
+    .chrono-date-banner { color: var(--accent-warm); font-size: 0.84rem; font-family: var(--font-biomorph); margin-top: 8px; }
+    .chrono-controls { display: flex; gap: 8px; margin-top: 18px; padding-top: 14px; border-top: 1px solid rgba(255, 255, 255, 0.08); justify-content: flex-end; }
+
+    /* Nav Slider Bar with Arrow Controls */
+    .tab-slider-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+      margin-bottom: 28px;
+      gap: 6px;
+    }
+
+    .slider-arrow-btn {
+      background: rgba(16, 20, 32, 0.95);
+      border: 1px solid var(--card-border);
+      color: var(--accent-warm);
+      width: 36px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1.25rem;
+      z-index: 10;
+      transition: all 0.2s ease;
+      flex-shrink: 0;
+      clip-path: polygon(4px 0, 100% 0, calc(100% - 4px) 100%, 0 100%);
+    }
+
+    .slider-arrow-btn:hover {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .mag-index-nav {
+      display: flex;
+      gap: 8px;
+      padding: 6px;
+      background: rgba(12, 15, 25, 0.85);
+      border: 1px solid var(--card-border);
+      clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14px 100%, 0 calc(100% - 14px));
+      overflow-x: auto;
+      scrollbar-width: none;
+      scroll-behavior: smooth;
+      flex: 1;
+    }
+    .mag-index-nav::-webkit-scrollbar { display: none; }
+
+    .mag-tab-btn {
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--text-2);
+      padding: 10px 18px;
+      clip-path: polygon(6px 0, 100% 0, calc(100% - 6px) 100%, 0 100%);
+      font-size: 0.82rem;
+      font-weight: 700;
+      font-family: var(--font-body);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+      transition: all 0.2s ease;
+      flex-shrink: 0;
+    }
+
+    .mag-tab-btn:hover { color: #fff; background: rgba(255, 255, 255, 0.05); }
+    .mag-tab-btn.active { background: linear-gradient(135deg, #e57358, #c85a3b); color: #fff; box-shadow: 0 4px 16px var(--accent-glow); }
+    .mag-pill-counter { background: rgba(0, 0, 0, 0.45); padding: 2px 7px; border-radius: 999px; font-size: 0.68rem; font-family: var(--font-biomorph); }
+
+    .btn-editorial {
+      background: rgba(255, 255, 255, 0.05);
+      color: #fff;
+      border: 1px solid var(--card-border);
+      clip-path: polygon(6px 0, 100% 0, calc(100% - 6px) 100%, 0 100%);
+      padding: 9px 16px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+      font-family: var(--font-body);
+    }
+    .btn-editorial:hover { background: var(--accent); border-color: var(--accent); color: #fff; box-shadow: 0 0 15px var(--accent-glow); }
+    .btn-cr-lock { background: rgba(229, 115, 88, 0.15); border: 1px solid rgba(229, 115, 88, 0.42); color: var(--accent-warm); }
+    .btn-whatsapp { background: rgba(37, 211, 102, 0.15); border: 1px solid rgba(37, 211, 102, 0.45); color: #4ade80; }
+    .btn-whatsapp:hover { background: #25d366; border-color: #25d366; color: #000; }
+    .btn-like { background: rgba(244, 63, 94, 0.12); border: 1px solid rgba(244, 63, 94, 0.35); color: #fda4af; padding: 5px 10px; font-size: 0.72rem; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; clip-path: polygon(5px 0, 100% 0, calc(100% - 5px) 100%, 0 100%); transition: transform 0.15s ease; }
+    .btn-like:active { transform: scale(0.92); }
+
+    /* Cockpit Strip: 3-column PC Layout */
+    .cockpit-strip {
+      display: grid;
+      grid-template-columns: 1.1fr 1fr 1.6fr;
+      gap: 18px;
+      margin-bottom: 28px;
+    }
+
+    .cockpit-panel {
+      background: linear-gradient(135deg, rgba(16, 20, 32, 0.75) 0%, rgba(10, 13, 21, 0.9) 100%);
+      border: 1px solid var(--card-border);
+      clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 16px 100%, 0 calc(100% - 16px));
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .cockpit-tag {
+      font-family: var(--font-biomorph);
+      font-size: 0.68rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 6px;
+    }
+
+    .cockpit-value-lead {
+      font-family: var(--font-serif);
+      font-size: 1.45rem;
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 4px;
+    }
+
+    .cockpit-timeline {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 4px 0;
+      margin-top: 6px;
+      scrollbar-width: none;
+    }
+    .cockpit-timeline::-webkit-scrollbar { display: none; }
+
+    .timeline-chip {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      clip-path: polygon(5px 0, 100% 0, calc(100% - 5px) 100%, 0 100%);
+      padding: 7px 10px;
+      min-width: 95px;
+      flex-shrink: 0;
+    }
+
+    .tab-section { display: none; }
+    .tab-section.active { display: block; }
+
+    /* Tri-Hub: 3-column PC Layout */
+    .tri-hub-editorial {
+      display: grid;
+      grid-template-columns: 1fr 1.25fr 1.2fr;
+      gap: 20px;
+      margin-bottom: 32px;
+    }
+
+    .hub-box {
+      background: linear-gradient(135deg, rgba(16, 20, 32, 0.75) 0%, rgba(10, 13, 21, 0.9) 100%);
+      border: 1px solid var(--card-border);
+      clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px));
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .hub-head {
+      font-family: var(--font-serif);
+      font-size: 1.5rem;
+      font-weight: 700;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .hub-stream {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      overflow-y: auto;
+      max-height: 270px;
+    }
+
+    .entry-card {
+      background: rgba(255, 255, 255, 0.025);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-left: 3px solid var(--accent);
+      clip-path: polygon(0 0, 100% 0, calc(100% - 8px) 100%, 0 100%);
+      padding: 10px 14px;
+    }
+
+    .entry-headline { font-family: var(--font-serif); font-weight: 600; font-size: 1rem; margin-bottom: 3px; }
+    .entry-desc { font-size: 0.78rem; color: var(--text-2); }
+
+    .deadline-row-item { border-left-color: #f43f5e; display: flex; justify-content: space-between; align-items: center; }
+    .deadline-badge { font-size: 0.7rem; padding: 2px 6px; clip-path: polygon(5px 0, 100% 0, calc(100% - 5px) 100%, 0 100%); background: rgba(244, 63, 94, 0.22); color: #fda4af; font-weight: 700; white-space: nowrap; font-family: var(--font-biomorph); }
+
+    .spotlight-birthday-card {
+      background: linear-gradient(145deg, rgba(229, 115, 88, 0.18), rgba(12, 16, 26, 0.92));
+      border: 1px solid rgba(229, 115, 88, 0.45);
+      clip-path: polygon(20px 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%, 0 20px);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: 0 0 30px rgba(229, 115, 88, 0.15);
+    }
+
+    .spotlight-avatar {
+      width: 72px;
+      height: 72px;
+      clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
+      background: linear-gradient(135deg, var(--accent), #9a3412);
+      border: 2px solid rgba(255, 255, 255, 0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: #fff;
+      overflow: hidden;
+      flex-shrink: 0;
+      font-family: var(--font-serif);
+    }
+
+    .spotlight-avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .spotlight-name { font-family: var(--font-serif); font-size: 1.35rem; font-weight: 700; line-height: 1.2; }
+
+    /* Timetable Responsive Sheet */
+    .timetable-editorial-sheet {
+      background: linear-gradient(135deg, rgba(16, 20, 32, 0.75) 0%, rgba(10, 13, 21, 0.9) 100%);
+      border: 1px solid var(--card-border);
+      clip-path: polygon(0 0, calc(100% - 24px) 0, 100% 24px, 100% 100%, 24px 100%, 0 calc(100% - 24px));
+      padding: 28px;
+      margin-bottom: 32px;
+    }
+
+    .table-responsive { overflow-x: auto; }
+    table { width: 100%; border-collapse: separate; border-spacing: 5px; }
+    th { font-family: var(--font-biomorph); font-weight: 700; color: var(--text-2); font-size: 0.68rem; letter-spacing: 1px; text-transform: uppercase; padding: 8px 6px; text-align: center; }
+    td { padding: 12px 6px; text-align: center; clip-path: polygon(5px 0, 100% 0, calc(100% - 5px) 100%, 0 100%); background: rgba(255, 255, 255, 0.025); border: 1px solid rgba(255, 255, 255, 0.04); min-width: 82px; font-size: 0.78rem; transition: background 0.2s, border-color 0.2s; }
+    td:hover { background: rgba(229, 115, 88, 0.15) !important; border-color: rgba(229, 115, 88, 0.4) !important; }
+    .col-day { font-family: var(--font-serif); font-weight: 700; font-size: 0.92rem; min-width: 95px; }
+
+    tr.today-active td { background: rgba(229, 115, 88, 0.18) !important; border-color: rgba(229, 115, 88, 0.55) !important; }
+    tr.today-active .col-day { color: var(--accent-warm) !important; }
+    tr.tomorrow-active td { border-color: rgba(245, 158, 11, 0.45) !important; background: rgba(245, 158, 11, 0.08) !important; }
+    tr.day-dimmed { opacity: 0.42; }
+
+    .c-badge { display: inline-block; font-weight: 700; font-size: 0.8rem; padding: 5px 6px; clip-path: polygon(4px 0, 100% 0, calc(100% - 4px) 100%, 0 100%); width: 100%; font-family: var(--font-stinker); transition: transform 0.2s; }
+    .c-badge:hover { transform: scale(1.05); }
+    .c-rmp { background: rgba(59, 130, 246, 0.22); color: #93c5fd; border: 1px solid rgba(59, 130, 246, 0.4); }
+    .c-ps3 { background: rgba(245, 158, 11, 0.22); color: #fde68a; border: 1px solid rgba(245, 158, 11, 0.4); }
+    .c-uhi { background: rgba(249, 115, 22, 0.22); color: #fdba74; border: 1px solid rgba(249, 115, 22, 0.4); }
+    .c-uef { background: rgba(234, 179, 8, 0.22); color: #fef08a; border: 1px solid rgba(234, 179, 8, 0.4); }
+    .c-psc { background: rgba(34, 197, 94, 0.22); color: #86efac; border: 1px solid rgba(34, 197, 94, 0.4); }
+    .c-dtp { background: rgba(100, 116, 139, 0.25); color: #cbd5e1; border: 1px solid rgba(100, 116, 139, 0.4); }
+    .c-tad { background: rgba(244, 63, 94, 0.22); color: #fda4af; border: 1px solid rgba(244, 63, 94, 0.4); }
+    .c-lb  { background: rgba(148, 163, 184, 0.08); color: #64748b; font-weight: 600; }
+
+    .scholar-grid-portfolio { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    .scholar-plate { background: rgba(255, 255, 255, 0.025); border: 1px solid var(--card-border); clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 0 100%); padding: 16px; display: flex; flex-direction: column; gap: 10px; }
+    .scholar-avatar-frame { position: relative; width: 52px; height: 52px; clip-path: polygon(25% 0%, 75% 0%, 100% 25%, 100% 75%, 75% 100%, 25% 100%, 0% 75%, 0% 25%); background: rgba(229, 115, 88, 0.18); border: 1px solid rgba(255, 255, 255, 0.15); display: flex; align-items: center; justify-content: center; cursor: pointer; overflow: hidden; flex-shrink: 0; }
+    .scholar-avatar-frame img { width: 100%; height: 100%; object-fit: cover; }
+    .scholar-avatar-init { font-size: 1.2rem; font-weight: 800; color: var(--accent-warm); font-family: var(--font-serif); }
+    .scholar-plate-name { font-family: var(--font-serif); font-size: 1.1rem; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+    .dossier-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+    .dossier-card { background: linear-gradient(135deg, rgba(16, 20, 32, 0.75) 0%, rgba(10, 13, 21, 0.9) 100%); border: 1px solid var(--card-border); clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px)); overflow: hidden; display: flex; flex-direction: column; box-shadow: 0 14px 35px rgba(0, 0, 0, 0.5); }
+    .dossier-image-box { width: 100%; height: 210px; position: relative; overflow: hidden; background: #080a10; }
+    .dossier-image-box img { width: 100%; height: 100%; object-fit: cover; }
+
+    .radar-deadline-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .radar-card { background: linear-gradient(135deg, rgba(16, 20, 32, 0.75) 0%, rgba(10, 13, 21, 0.9) 100%); border: 1px solid var(--card-border); clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 16px 100%, 0 calc(100% - 16px)); padding: 22px; display: flex; flex-direction: column; justify-content: space-between; }
+    .countdown-display { font-family: var(--font-biomorph); font-size: 1.8rem; font-weight: 800; color: var(--accent-warm); margin: 8px 0; }
+
+    .bottom-portfolio-spread { display: grid; grid-template-columns: 1.15fr 1fr; gap: 24px; margin-top: 32px; }
+    .bottom-plate { background: linear-gradient(135deg, rgba(16, 20, 32, 0.75) 0%, rgba(10, 13, 21, 0.9) 100%); border: 1px solid var(--card-border); clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px)); padding: 26px; display: flex; flex-direction: column; }
+    .class-portrait-frame { width: 100%; height: 270px; background: rgba(0, 0, 0, 0.45); border: 1px solid rgba(255, 255, 255, 0.08); clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px); overflow: hidden; display: flex; align-items: center; justify-content: center; margin-bottom: 12px; }
+    .class-portrait-frame img { width: 100%; height: 100%; object-fit: cover; }
+
+    .cal-matrix { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; text-align: center; margin-top: 12px; }
+    .cal-head-day { font-size: 0.68rem; color: var(--text-2); font-weight: 700; padding: 4px 0; font-family: var(--font-biomorph); }
+    .cal-day-cell { background: rgba(255, 255, 255, 0.025); border: 1px solid rgba(255, 255, 255, 0.05); clip-path: polygon(4px 0, 100% 0, calc(100% - 4px) 100%, 0 100%); padding: 8px 2px; font-size: 0.76rem; cursor: pointer; min-height: 44px; display: flex; flex-direction: column; align-items: center; justify-content: space-between; }
+    .cal-day-cell.cal-today { border-color: var(--accent); background: rgba(229, 115, 88, 0.2); font-weight: 800; }
+    .cal-dots-row { display: flex; gap: 3px; justify-content: center; margin-top: 2px; }
+    .dot-n { width: 5px; height: 5px; border-radius: 50%; background: var(--accent); display: inline-block; }
+    .dot-d { width: 5px; height: 5px; border-radius: 50%; background: #f43f5e; display: inline-block; }
+
+    .modal-backdrop-editorial { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.86); backdrop-filter: blur(14px); display: none; align-items: center; justify-content: center; z-index: 100; padding: 20px; }
+    .modal-box-editorial { background: #0d101a; border: 1px solid rgba(229, 115, 88, 0.4); clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px)); width: 100%; max-width: 660px; padding: 28px; box-shadow: 0 25px 50px rgba(0, 0, 0, 0.7); max-height: 90vh; overflow-y: auto; }
+    .form-unit { margin-bottom: 12px; }
+    .form-unit label { display: block; font-size: 0.74rem; color: var(--text-2); margin-bottom: 5px; text-transform: uppercase; font-family: var(--font-biomorph); }
+    .input-field { width: 100%; background: rgba(0, 0, 0, 0.45); border: 1px solid var(--card-border); clip-path: polygon(6px 0, 100% 0, calc(100% - 6px) 100%, 0 100%); padding: 9px 12px; color: #fff; font-family: var(--font-body); font-size: 0.84rem; }
+    #confetti-canvas { position: fixed; inset: 0; pointer-events: none; z-index: 999; }
+
+    /* ---- Shared-cloud / CR direct-edit additions ---- */
+    .icon-btn { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.14); color: #e2e8f0; padding: 3px 8px; font-size: 0.7rem; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; gap: 4px; font-family: var(--font-body); }
+    .icon-btn:hover { background: var(--accent); border-color: var(--accent); color: #fff; }
+    .icon-btn.danger { color: #f43f5e; border-color: rgba(244,63,94,0.4); }
+    .icon-btn.danger:hover { background: #f43f5e; color: #fff; }
+    .cr-row-tools { display: inline-flex; gap: 4px; align-items: center; margin-left: 8px; flex-shrink: 0; }
+    body.cr-mode td.tt-editable { cursor: pointer; outline: 1px dashed rgba(229,115,88,0.0); transition: outline-color .15s, background .15s; }
+    body.cr-mode td.tt-editable:hover { outline-color: rgba(229,115,88,0.8); background: rgba(229,115,88,0.08); }
+    .tt-inline-input { width: 78px; background: #0b0e17; color: #fff; border: 1px solid var(--accent); padding: 4px 6px; font-size: 0.75rem; text-align: center; font-family: var(--font-body); }
+    #plaxus-toast { position: fixed; left: 50%; bottom: 28px; transform: translateX(-50%) translateY(20px); background: #0f172a; border: 1px solid var(--accent); color: #fff; padding: 10px 20px; font-size: 0.82rem; z-index: 20000; opacity: 0; pointer-events: none; transition: opacity .25s, transform .25s; box-shadow: 0 10px 30px rgba(0,0,0,.6); }
+    #plaxus-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+    #plaxus-toast.err { border-color: #f43f5e; }
+  </style>
+</head>
+<body>
+
+  <!-- Custom Interactive Cursor Elements -->
+  <div id="cursor-dot"></div>
+  <div id="cursor-ring"></div>
+  <div class="mag-canvas-dots"></div>
+  <div id="custom-user-bg"></div>
+  <div id="cursor-spotlight"></div>
+  <canvas id="confetti-canvas"></canvas>
+
+  <div class="viewport-container">
+    
+    <!-- EXCLUSIVE CR ACTIVE BANNER (ONLY DISPLAYED ON CR LINK) -->
+    <div class="cr-executive-banner" id="cr-top-deck-banner">
+      <div><strong>⚡ AB204 CR EXECUTIVE DESK ACTIVE</strong> — every edit is saved to the cloud and goes live on the class link instantly</div>
+      <div style="display:flex; gap:10px;">
+        <button class="btn-editorial" style="background:#000; padding:4px 10px; font-size:0.7rem;" onclick="copyClassShareLink()">🔗 Copy Class Link</button>
+        <button class="btn-editorial" style="background:#000; padding:4px 10px; font-size:0.7rem;" onclick="openCRSuiteModal()">⚙ Open CR Suite</button>
+      </div>
+    </div>
+
+    <div class="folio-tape">
+      <div class="folio-item"><span>Vol. III • Studio AB204 Monograph</span><span> • </span><span>M.Plan 2025–26</span></div>
+      <div class="folio-item">
+        <span id="sync-status-indicator" style="color:#22c55e; margin-right:8px; font-weight:700;">● LIVE SYNC ACTIVE</span>
+        <span>Department of Architecture & Planning • NIT Calicut</span>
+      </div>
+    </div>
+
+    <!-- Marquee 1 -->
+    <div class="mag-ribbon">
+      <div class="ribbon-tag" style="color:var(--accent-warm);"><span class="live-dot"></span> DISPATCH</div>
+      <div class="ribbon-track">
+        <span class="marquee-text-flow" id="marquee-text-content">
+          World Habitat Day on 05-10-26, 10 AM onwards • Conference Hall • Department of Architecture & Planning, NIT Calicut
+        </span>
+      </div>
+    </div>
+
+    <!-- Marquee 2 -->
+    <div class="mag-ribbon sub-ribbon">
+      <div class="ribbon-tag" style="color:#fda4af;"><span class="live-dot alert"></span> CR RADAR</div>
+      <div class="ribbon-track">
+        <span class="marquee-text-flow radar" id="marquee-reminders-content">Scanning upcoming studio deadlines, submission guidelines, blogs, and scholar creative works...</span>
+      </div>
+    </div>
+
+    <header class="mag-cover-spread">
+      <div class="cover-masthead">
+        <div>
+          <div class="cover-volume-tag"><span>Spatial Studio Monograph</span><span> • </span><span>11°19'N 75°56'E</span><span> • </span><span style="color:var(--cyan);">Scale 1:50,000</span></div>
+          <h1 class="cover-title">PLAXUS</h1>
+          <div class="cover-lead">Planning Learners Association eXchanging Urban Solutions</div>
+        </div>
+      </div>
+
+      <div class="cover-sidebar-chronometer">
+        <div>
+          <div class="chrono-stamp-top"><span>Precision Chrono</span><span style="color:var(--accent);">AB204 Studio</span></div>
+          <div class="chrono-display-large"><span id="chrono-hours-min">--:--</span><span class="chrono-seconds" id="chrono-sec">:00</span><span class="chrono-meridiem" id="chrono-ampm">AM</span></div>
+          <div class="chrono-date-banner" id="chrono-date-line">Evaluating date...</div>
+        </div>
+        <div class="chrono-controls" id="header-cr-controls" style="display:none;">
+          <button class="btn-editorial btn-cr-lock" onclick="openCRAuthModal()"><span>🔒 CR Suite</span></button>
+        </div>
+      </div>
+    </header>
+
+    <section class="cockpit-strip">
+      <div class="cockpit-panel">
+        <div>
+          <div class="cockpit-tag" style="color:var(--cyan);"><span class="live-dot" style="background:var(--cyan); box-shadow:0 0 10px var(--cyan);"></span>TODAY'S TIMETABLE LOAD</div>
+          <div class="cockpit-value-lead" id="cockpit-today-title">Evaluating classes...</div>
+          <div style="font-size:0.8rem; color:var(--text-2);" id="cockpit-today-desc">Evaluating studio schedule matrix...</div>
+        </div>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:12px; font-family:var(--font-biomorph); font-size:0.72rem;">
+          <span id="cockpit-today-dayname">--</span><span style="color:var(--accent-warm);">LB: 01:00PM - 02:00PM</span>
+        </div>
+      </div>
+
+      <div class="cockpit-panel" style="border-color: rgba(229,115,88,0.45); background: linear-gradient(135deg, rgba(229,115,88,0.12) 0%, rgba(13,16,27,0.88) 100%);">
+        <div>
+          <div class="cockpit-tag" style="color:var(--accent-warm);"><span class="live-dot"></span>THIS CURRENT HOUR</div>
+          <div class="cockpit-value-lead" id="cockpit-current-code">Evaluating...</div>
+          <div style="font-size:0.8rem; color:var(--text-2);" id="cockpit-current-time">Slot In Session</div>
+        </div>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:12px; font-family:var(--font-biomorph); font-size:0.72rem;">
+          <span id="cockpit-current-room">Studio AB204</span><span style="color:#22c55e;" id="cockpit-current-status">LIVE NOW</span>
+        </div>
+      </div>
+
+      <div class="cockpit-panel">
+        <div>
+          <div class="cockpit-tag" style="color:#fda4af;"><span class="live-dot alert"></span>UPCOMING HOURS</div>
+          <div style="font-family:var(--font-serif); font-size:1.2rem; font-weight:700;">Remaining Sessions Today</div>
+          <div class="cockpit-timeline" id="cockpit-upcoming-timeline"></div>
+        </div>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:12px; font-family:var(--font-biomorph); font-size:0.72rem;">
+          <span id="cockpit-upcoming-tally">0 slots remaining</span><span style="color:var(--text-2);">M.Plan Sem 3</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Nav Slider With Arrow Controls -->
+    <div class="tab-slider-wrapper">
+      <button class="slider-arrow-btn" onclick="scrollTabsNav(-260)" title="Scroll left">‹</button>
+      <nav class="mag-index-nav" id="mag-tab-slider">
+        <button class="mag-tab-btn active" onclick="switchMagSection('sec-overview', this)"><span>🏛 Studio Overview & Matrix</span></button>
+        <button class="mag-tab-btn" onclick="switchMagSection('sec-scholars', this)"><span>👥 Scholar Portfolio Cards</span><span class="mag-pill-counter" id="scholar-badge-count">20</span></button>
+        <button class="mag-tab-btn" onclick="switchMagSection('sec-guidelines', this)"><span>📐 Submission Dossiers</span><span class="mag-pill-counter" id="guidelines-badge-count">3</span></button>
+        <button class="mag-tab-btn" onclick="switchMagSection('sec-deadlines', this)"><span>⏳ Deadlines & Milestones</span><span class="mag-pill-counter" id="deadlines-badge-count" style="background:rgba(244,63,94,0.4);">4</span></button>
+        <button class="mag-tab-btn" onclick="switchMagSection('sec-creative', this)"><span>🎨 Creative Corner</span><span class="mag-pill-counter" id="creative-badge-count" style="background:rgba(56,189,248,0.35);">3</span></button>
+        <button class="mag-tab-btn" onclick="switchMagSection('sec-blogs', this)"><span>✍️ Class Blogs & Reflections</span><span class="mag-pill-counter" id="blogs-badge-count" style="background:rgba(229,115,88,0.35);">2</span></button>
+        <button class="mag-tab-btn" onclick="switchMagSection('sec-suggestions', this)"><span>💬 Suggestions & Responses</span><span class="mag-pill-counter" id="suggestions-badge-count" style="background:#22c55e;">2</span></button>
+      </nav>
+      <button class="slider-arrow-btn" onclick="scrollTabsNav(260)" title="Scroll right">›</button>
+    </div>
+
+    <!-- TAB 1: OVERVIEW -->
+    <div id="sec-overview" class="tab-section active">
+      <section class="tri-hub-editorial">
+        <div class="hub-box">
+          <div class="hub-head">
+            <span>Studio Notices</span>
+            <div style="display:flex; align-items:center; gap:6px;">
+              <span style="font-family:var(--font-biomorph); font-size:0.75rem; color:var(--accent-warm);">AB204</span>
+              <button class="btn-editorial cr-only-btn" style="padding:2px 8px; font-size:0.65rem;" onclick="openCRSuiteWithTab('manage-notices')">+ Post</button>
+            </div>
+          </div>
+          <div class="hub-stream" id="announcements-list"></div>
+        </div>
+
+        <div class="hub-box">
+          <div class="hub-head">
+            <span>Critical Submissions</span>
+            <div style="display:flex; align-items:center; gap:6px;">
+              <span style="font-family:var(--font-biomorph); font-size:0.75rem; color:#f43f5e;">Sem 3</span>
+              <button class="btn-editorial cr-only-btn" style="padding:2px 8px; font-size:0.65rem;" onclick="openCRSuiteWithTab('manage-deadlines')">+ Add</button>
+            </div>
+          </div>
+          <div class="hub-stream" id="deadlines-list-overview"></div>
+        </div>
+
+        <div class="spotlight-birthday-card">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; font-family:var(--font-biomorph); font-size:0.72rem; text-transform:uppercase; letter-spacing:1px; color:var(--accent-warm);">
+            <span>Celebration Spotlight</span><span>Batch M25</span>
+          </div>
+          <div style="display:flex; align-items:center; gap:16px; margin:10px 0 14px;">
+            <div class="spotlight-avatar" id="spotlight-avatar">?</div>
+            <div>
+              <div class="spotlight-name" id="spotlight-name">Scanning...</div>
+              <div style="font-family:var(--font-biomorph); font-size:0.78rem; color:var(--accent-warm);" id="spotlight-roll">Roll No.</div>
+              <div style="font-size:0.75rem; color:#cbd5e1; margin-top:2px;" id="spotlight-dob">--</div>
+            </div>
+          </div>
+          <div style="background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.08); clip-path:polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%); padding:8px 14px; display:flex; justify-content:space-between; align-items:center; font-size:0.82rem; margin-bottom:12px;">
+            <span id="spotlight-countdown">Calculating...</span><span style="color:var(--accent-warm); font-weight:700;">🎂</span>
+          </div>
+          <button class="btn-editorial" style="width:100%; justify-content:center; background:linear-gradient(135deg, #e57358, #c85a3b);" onclick="fireConfettiCannon()">🎉 Blast Confetti</button>
+        </div>
+      </section>
+
+      <section class="timetable-editorial-sheet">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:14px; margin-bottom:20px; padding-bottom:14px; border-bottom:1px solid rgba(255,255,255,0.06);">
+          <div>
+            <h2 style="font-family:var(--font-serif); font-size:1.75rem; font-weight:700;">M. Plan Semester 3 Timetable</h2>
+            <p style="font-size:0.8rem; color:var(--text-2); font-family:var(--font-biomorph);">Department of Architecture & Planning, NIT Calicut</p>
+          </div>
+          <div style="display:flex; gap:5px; flex-wrap:wrap; background:rgba(0,0,0,0.45); padding:4px; clip-path:polygon(6px 0, 100% 0, calc(100% - 6px) 100%, 0 100%); border:1px solid var(--card-border);">
+            <button class="mag-tab-btn active" style="padding:5px 12px; font-size:0.74rem;" onclick="setTimetableView('all', this)">Full Matrix</button>
+            <button class="mag-tab-btn" style="padding:5px 12px; font-size:0.74rem;" onclick="setTimetableView('Monday', this)">Monday</button>
+            <button class="mag-tab-btn" style="padding:5px 12px; font-size:0.74rem;" onclick="setTimetableView('Tuesday', this)">Tuesday</button>
+            <button class="mag-tab-btn" style="padding:5px 12px; font-size:0.74rem;" onclick="setTimetableView('Wednesday', this)">Wednesday</button>
+            <button class="mag-tab-btn" style="padding:5px 12px; font-size:0.74rem;" onclick="setTimetableView('Thursday', this)">Thursday</button>
+            <button class="mag-tab-btn" style="padding:5px 12px; font-size:0.74rem;" onclick="setTimetableView('Friday', this)">Friday</button>
+            <button class="btn-editorial cr-only-btn" style="padding:4px 8px; font-size:0.7rem; margin-left:8px;" onclick="openCRSuiteWithTab('modify-tt')">✏ Edit Matrix</button>
+          </div>
+        </div>
+
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>Day</th>
+                <th>1<br><span style="font-weight:400;opacity:0.7">08:00-09:00</span></th>
+                <th>2<br><span style="font-weight:400;opacity:0.7">09:00-10:00</span></th>
+                <th>3<br><span style="font-weight:400;opacity:0.7">10:00-11:00</span></th>
+                <th>4<br><span style="font-weight:400;opacity:0.7">11:00-12:00</span></th>
+                <th>5<br><span style="font-weight:400;opacity:0.7">12:00-01:00</span></th>
+                <th>6<br><span style="font-weight:400;opacity:0.7">01:00-02:00</span></th>
+                <th>7<br><span style="font-weight:400;opacity:0.7">02:00-03:00</span></th>
+                <th>8<br><span style="font-weight:400;opacity:0.7">03:00-04:00</span></th>
+                <th>9<br><span style="font-weight:400;opacity:0.7">04:00-05:00</span></th>
+              </tr>
+            </thead>
+            <tbody id="timetable-body"></tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+
+    <!-- TAB 2: SCHOLARS -->
+    <div id="sec-scholars" class="tab-section">
+      <div class="mag-plate" style="padding:28px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:14px; margin-bottom:20px; padding-bottom:14px; border-bottom:1px solid rgba(255,255,255,0.06);">
+          <div>
+            <h2 style="font-family:var(--font-serif); font-size:1.75rem; font-weight:700;">Batch M25 Scholar Portfolio Registry</h2>
+            <p style="font-size:0.8rem; color:var(--text-2); font-family:var(--font-biomorph);">Contact records, blood registry, and verified scholar credentials</p>
+          </div>
+          <div style="display:flex; gap:10px; align-items:center;"><button class="btn-editorial btn-cr-lock cr-only-btn" onclick="openScholarEditor('')">+ Add Scholar</button><input type="text" class="input-field" id="search-student" placeholder="Search scholar, roll number, blood group..." oninput="filterScholars()" style="padding:8px 14px; width:260px; font-size:0.82rem;" /></div>
+        </div>
+        <div class="scholar-grid-portfolio" id="scholars-grid"></div>
+      </div>
+    </div>
+
+    <!-- TAB 3: GUIDELINES -->
+    <div id="sec-guidelines" class="tab-section">
+      <div class="mag-plate" style="padding:28px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:22px; border-bottom:1px solid rgba(255,255,255,0.06); padding-bottom:14px; flex-wrap:wrap; gap:12px;">
+          <div>
+            <h2 style="font-family:var(--font-serif); font-size:1.75rem; font-weight:700;">Studio Submission Dossiers & Protocols</h2>
+            <p style="font-size:0.8rem; color:var(--text-2); font-family:var(--font-biomorph);">Curated architectural portfolios, drawing scales, cartographic criteria, and jury requirements</p>
+          </div>
+          <button class="btn-editorial btn-cr-lock cr-only-btn" onclick="openCRSuiteWithTab('manage-guidelines')">⚙ Manage Dossiers</button>
+        </div>
+        <div class="dossier-grid" id="guidelines-container"></div>
+      </div>
+    </div>
+
+    <!-- TAB 4: DEADLINES -->
+    <div id="sec-deadlines" class="tab-section">
+      <div class="mag-plate" style="padding:28px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:22px; padding-bottom:14px; border-bottom:1px solid rgba(255,255,255,0.06); flex-wrap:wrap; gap:12px;">
+          <div>
+            <h2 style="font-family:var(--font-serif); font-size:1.75rem; font-weight:700;">Studio Milestone Radar</h2>
+            <p style="font-size:0.8rem; color:var(--text-2); font-family:var(--font-biomorph);">Critical review dates, interim submissions, and academic milestones</p>
+          </div>
+          <button class="btn-editorial btn-cr-lock cr-only-btn" onclick="openCRSuiteWithTab('manage-deadlines')">⚙ Manage Deadlines</button>
+        </div>
+        <div class="radar-deadline-grid" id="deadlines-full-grid"></div>
+      </div>
+    </div>
+
+    <!-- TAB 5: CREATIVE -->
+    <div id="sec-creative" class="tab-section">
+      <div class="mag-plate" style="padding:28px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:22px; border-bottom:1px solid rgba(255,255,255,0.06); padding-bottom:14px; flex-wrap:wrap; gap:12px;">
+          <div>
+            <h2 style="font-family:var(--font-serif); font-size:1.75rem; font-weight:700;">Creative Corner & Works Display</h2>
+            <p style="font-size:0.8rem; color:var(--text-2); font-family:var(--font-biomorph);">Regional cartography, spatial analytics, urban design renderings, and masterplan sheets by Batch M25</p>
+          </div>
+          <button class="btn-editorial btn-cr-lock cr-only-btn" onclick="openCRSuiteWithTab('manage-creative')">+ Pin Creative Work</button>
+        </div>
+        <div class="creative-corner-grid" id="creative-corner-grid" style="display:grid; grid-template-columns:repeat(3, 1fr); gap:22px;"></div>
+      </div>
+    </div>
+
+    <!-- TAB 6: BLOGS -->
+    <div id="sec-blogs" class="tab-section">
+      <div class="mag-plate" style="padding:28px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:22px; border-bottom:1px solid rgba(255,255,255,0.06); padding-bottom:14px; flex-wrap:wrap; gap:12px;">
+          <div>
+            <h2 style="font-family:var(--font-serif); font-size:1.75rem; font-weight:700;">Class Blogs & Urban Reflections</h2>
+            <p style="font-size:0.8rem; color:var(--text-2); font-family:var(--font-biomorph);">Scholarly essays, field visit debriefs, transit observations, and spatial musings from AB204 studio</p>
+          </div>
+          <button class="btn-editorial btn-cr-lock cr-only-btn" onclick="openCRSuiteWithTab('manage-blogs')">+ Publish Article</button>
+        </div>
+        <div class="blogs-editorial-stream" id="class-blogs-stream" style="display:grid; grid-template-columns:repeat(3, 1fr); gap:24px;"></div>
+      </div>
+    </div>
+
+    <!-- TAB 7: SUGGESTIONS -->
+    <div id="sec-suggestions" class="tab-section">
+      <div class="mag-plate" style="padding:30px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:14px; margin-bottom:20px; padding-bottom:14px; border-bottom:1px solid rgba(255,255,255,0.06);">
+          <div>
+            <h2 style="font-family:var(--font-serif); font-size:1.75rem; font-weight:700;">Studio Suggestions & Responses Board</h2>
+            <p style="font-size:0.8rem; color:var(--text-2); font-family:var(--font-biomorph);">Leave feedback, studio improvements, schedule change requests, and discussion responses</p>
+          </div>
+          <button class="btn-editorial" onclick="openNewSuggestionModal()">+ New Suggestion</button>
+        </div>
+        <div id="suggestions-feed-container"></div>
+      </div>
+    </div>
+
+    <!-- FOOTER CARDS -->
+    <section class="bottom-portfolio-spread">
+      <div class="bottom-plate">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+          <div>
+            <h3 style="font-family:var(--font-serif); font-size:1.45rem; font-weight:700;">Batch M25 Studio Portrait</h3>
+            <p style="font-size:0.75rem; color:var(--text-2); font-family:var(--font-biomorph);" id="class-photo-caption">Department of Architecture & Planning, NIT Calicut</p>
+          </div>
+          <button class="btn-editorial btn-cr-lock cr-only-btn" onclick="triggerProtectedAction('uploadClassPhoto')">📷 Update Portrait</button>
+          <input type="file" id="class-photo-input" accept="image/*" style="display:none;" onchange="handleClassPhotoUpload(event)" />
+        </div>
+        <div class="class-portrait-frame">
+          <img id="class-portrait-img" src="" alt="Batch M25 Class Portrait" style="display:none;" />
+          <div id="class-photo-placeholder" style="text-align:center; color:var(--text-2); font-size:0.82rem;">
+            No official class portrait pinned yet.
+          </div>
+        </div>
+      </div>
+
+      <div class="bottom-plate">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+          <div>
+            <h3 style="font-family:var(--font-serif); font-size:1.45rem; font-weight:700;">Academic Calendar</h3>
+            <p style="font-size:0.75rem; color:var(--text-2); font-family:var(--font-biomorph);" id="cal-month-title">October 2026</p>
+          </div>
+          <div style="display:flex; gap:10px; font-size:0.72rem; color:var(--text-2); font-family:var(--font-biomorph);">
+            <span style="display:flex; align-items:center; gap:4px;"><span class="dot-n"></span> Notice</span>
+            <span style="display:flex; align-items:center; gap:4px;"><span class="dot-d"></span> Deadline</span>
+          </div>
+        </div>
+        <div class="cal-matrix" id="academic-calendar"></div>
+        <div id="calendar-day-info" style="margin-top:14px; padding:10px 14px; background:rgba(0,0,0,0.45); clip-path:polygon(6px 0, 100% 0, calc(100% - 6px) 100%, 0 100%); font-size:0.78rem; color:var(--text-2); min-height:46px;">
+          Select any marked date on the calendar matrix to inspect events.
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Modals -->
+  <div class="modal-backdrop-editorial" id="blogReaderModal">
+    <div class="modal-box-editorial">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+        <span style="font-family:var(--font-biomorph); font-size:0.75rem; color:var(--cyan);" id="reader-meta">OCTOBER 2026 • ESSAY</span>
+        <button class="btn-editorial" style="padding:4px 10px;" onclick="closeModal('blogReaderModal')">✕</button>
+      </div>
+      <h2 style="font-family:var(--font-serif); font-size:1.65rem; font-weight:700; line-height:1.3; margin-bottom:6px;" id="reader-title">Article Title</h2>
+      <div style="font-family:var(--font-biomorph); font-size:0.78rem; color:var(--accent-warm); margin-bottom:14px;" id="reader-author">By Author Name</div>
+      <div style="font-size:0.88rem; color:#cbd5e1; line-height:1.75; white-space:pre-wrap;" id="reader-body"></div>
+    </div>
+  </div>
+
+  <div class="modal-backdrop-editorial" id="newSuggestionModal">
+    <div class="modal-box-editorial" style="max-width:520px;">
+      <h3 style="font-family:var(--font-serif); font-size:1.35rem; font-weight:700; margin-bottom:10px; color:var(--accent-warm);">💡 Submit Studio Suggestion</h3>
+      <div class="form-unit"><label>Your Name / Alias</label><input type="text" id="sugg-author" class="input-field" placeholder="Scholar name..." /></div>
+      <div class="form-unit"><label>Suggestion Title</label><input type="text" id="sugg-title" class="input-field" placeholder="Title..." /></div>
+      <div class="form-unit"><label>Details & Context</label><textarea id="sugg-body" class="input-field" rows="4" placeholder="Explain feedback..."></textarea></div>
+      <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:16px;">
+        <button class="btn-editorial" onclick="closeModal('newSuggestionModal')">Cancel</button>
+        <button class="btn-editorial" onclick="postSuggestion()">Submit</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-backdrop-editorial" id="replySuggestionModal">
+    <div class="modal-box-editorial" style="max-width:500px;">
+      <h3 style="font-family:var(--font-serif); font-size:1.3rem; font-weight:700; margin-bottom:8px; color:var(--cyan);">💬 Post Response</h3>
+      <p style="font-size:0.82rem; color:var(--text-2); margin-bottom:14px;" id="reply-target-title">Replying...</p>
+      <input type="hidden" id="reply-target-id" />
+      <div class="form-unit"><label>Your Name / Role</label><input type="text" id="reply-author" class="input-field" placeholder="Your name (e.g. CR / Scholar)..." /></div>
+      <div class="form-unit"><label>Your Response</label><textarea id="reply-body" class="input-field" rows="4" placeholder="Write response..."></textarea></div>
+      <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:14px;">
+        <button class="btn-editorial" onclick="closeModal('replySuggestionModal')">Cancel</button>
+        <button class="btn-editorial" onclick="submitReplyToSuggestion()">Send</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-backdrop-editorial" id="crAuthModal">
+    <div class="modal-box-editorial" style="max-width:400px;">
+      <h3 style="font-family:var(--font-serif); font-size:1.3rem; font-weight:700; margin-bottom:8px;">🔒 CR & Admin Suite Access</h3>
+      <p style="font-size:0.78rem; color:var(--text-2); margin-bottom:14px;">Enter the CR passcode to edit the class dashboard. Changes go live for everyone.</p>
+      <div class="form-unit"><label>Passcode</label><input type="password" id="cr-passcode-input" class="input-field" placeholder="Enter passcode..." autocomplete="current-password" onkeydown="if(event.key==='Enter') verifyCRAuth()" /></div>
+      <div id="cr-auth-error" style="color:#f43f5e; font-size:0.78rem; display:none; margin-bottom:10px; font-family:monospace;">Incorrect passcode.</div>
+      <div style="display:flex; justify-content:flex-end; gap:10px;">
+        <button class="btn-editorial" onclick="closeModal('crAuthModal')">Cancel</button>
+        <button class="btn-editorial" id="cr-unlock-btn" onclick="verifyCRAuth()">Unlock</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CR SCHOLAR EDITOR (CR link only) -->
+  <div class="modal-backdrop-editorial" id="crScholarModal">
+    <div class="modal-box-editorial" style="max-width:480px;">
+      <h3 style="font-family:var(--font-serif); font-size:1.3rem; font-weight:700; margin-bottom:12px;" id="scholar-editor-heading">Edit Scholar</h3>
+      <input type="hidden" id="cr-scholar-orig" value="" />
+      <div class="form-unit"><label>Full Name</label><input type="text" id="cr-scholar-name" class="input-field" maxlength="80" /></div>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+        <div class="form-unit"><label>Roll No.</label><input type="text" id="cr-scholar-roll" class="input-field" maxlength="24" /></div>
+        <div class="form-unit"><label>DOB (DD/MM/YYYY)</label><input type="text" id="cr-scholar-dob" class="input-field" maxlength="12" placeholder="17/12/2001" /></div>
+      </div>
+      <div class="form-unit"><label>Email</label><input type="text" id="cr-scholar-email" class="input-field" maxlength="120" /></div>
+      <div style="display:flex; justify-content:space-between; gap:10px; margin-top:14px;">
+        <button class="btn-editorial" id="cr-scholar-delete-btn" style="color:#f43f5e; display:none;" onclick="removeScholarFromEditor()">🗑 Remove</button>
+        <div style="display:flex; gap:10px; margin-left:auto;">
+          <button class="btn-editorial" onclick="closeModal('crScholarModal')">Cancel</button>
+          <button class="btn-editorial" onclick="saveScholarFromEditor()">Save & Sync</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CR MANAGEMENT SUITE MODAL -->
+  <div class="modal-backdrop-editorial" id="crSuiteModal">
+    <div class="modal-box-editorial" style="max-width:760px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+        <div>
+          <h3 style="font-family:var(--font-serif); font-size:1.55rem; font-weight:800;">⚙ CR Studio Management Hub</h3>
+          <p style="font-size:0.78rem; color:var(--text-2); font-family:var(--font-biomorph);">Executive Controls for Class Representatives & Admins</p>
+        </div>
+        <button class="btn-editorial" style="padding:4px 10px;" onclick="closeModal('crSuiteModal')">✕</button>
+      </div>
+
+      <div style="display:flex; gap:8px; margin-bottom:18px; border-bottom:1px solid rgba(255,255,255,0.08); padding-bottom:12px; overflow-x:auto;">
+        <button class="btn-editorial" onclick="switchCRTab('manage-deadlines')">⏳ Deadlines</button>
+        <button class="btn-editorial" onclick="switchCRTab('manage-notices')">📢 Notices</button>
+        <button class="btn-editorial" onclick="switchCRTab('manage-guidelines')">📐 Profiles</button>
+        <button class="btn-editorial" onclick="switchCRTab('modify-tt')">📅 Timetable</button>
+        <button class="btn-editorial" onclick="switchCRTab('manage-creative')">🎨 Creative</button>
+        <button class="btn-editorial" onclick="switchCRTab('manage-blogs')">✍️ Blogs</button>
+        <button class="btn-editorial" onclick="switchCRTab('manage-suggestions')">💬 Feed</button>
+        <button class="btn-editorial" onclick="switchCRTab('broadcast')">📢 Broadcast</button>
+        <button class="btn-editorial" onclick="switchCRTab('settings')">🎨 Settings</button>
+      </div>
+
+      <!-- Deadlines -->
+      <div id="cr-tab-deadlines">
+        <div style="background:rgba(0,0,0,0.3); padding:18px; border-radius:10px; margin-bottom:18px; border:1px solid var(--card-border);">
+          <h4 style="font-size:0.95rem; margin-bottom:12px; color:var(--accent-warm); font-family:var(--font-serif);" id="deadline-form-heading">Create / Modify Deadline</h4>
+          <input type="hidden" id="cr-deadline-id" value="" />
+          <div class="form-unit"><label>Task Title</label><input type="text" id="cr-deadline-title" class="input-field" placeholder="Title..." /></div>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+            <div class="form-unit"><label>Subject</label><select id="cr-deadline-subject" class="input-field"><option>PS-III</option><option>RMP</option><option>UHI</option><option>UEF</option><option>PSC</option><option>DTP</option><option>TAD</option></select></div>
+            <div class="form-unit"><label>Due Date</label><input type="date" id="cr-deadline-date" class="input-field" /></div>
+          </div>
+          <div class="form-unit"><label>Description</label><input type="text" id="cr-deadline-desc" class="input-field" placeholder="Details..." /></div>
+          <div style="display:flex; gap:10px; justify-content:flex-end;">
+            <button class="btn-editorial" style="background:transparent; display:none;" id="cancel-deadline-edit-btn" onclick="resetDeadlineForm()">Clear</button>
+            <button class="btn-editorial" onclick="saveOrUpdateDeadline()" id="save-deadline-btn">Save & Sync</button>
+          </div>
+        </div>
+        <h4 style="font-size:0.9rem; margin-bottom:10px; color:var(--text-2); font-family:var(--font-biomorph);">Existing Deadlines</h4>
+        <div id="cr-deadlines-list-manager" style="max-height:220px; overflow-y:auto;"></div>
+      </div>
+
+      <!-- Guidelines -->
+      <div id="cr-tab-guidelines" style="display:none;">
+        <div style="background:rgba(0,0,0,0.3); padding:18px; border-radius:10px; margin-bottom:18px; border:1px solid var(--card-border);">
+          <h4 style="font-size:0.95rem; margin-bottom:12px; color:var(--accent-warm); font-family:var(--font-serif);" id="guideline-form-heading">Create / Modify Dossier</h4>
+          <input type="hidden" id="cr-guide-id" value="" />
+          <div style="display:grid; grid-template-columns:1fr 2fr; gap:12px;">
+            <div class="form-unit"><label>Subject</label><select id="cr-guide-subject" class="input-field"><option>PS-III</option><option>RMP</option><option>UHI</option><option>UEF</option><option>PSC</option><option>DTP</option><option>TAD</option></select></div>
+            <div class="form-unit"><label>Headline</label><input type="text" id="cr-guide-title" class="input-field" placeholder="Heading..." /></div>
+          </div>
+          <div class="form-unit"><label>Cover Photo URL</label><input type="text" id="cr-guide-image" class="input-field" placeholder="https://..." /></div>
+          <div class="form-unit"><label>Specs (comma separated)</label><input type="text" id="cr-guide-specs" class="input-field" placeholder="A1 Landscape, Scale 1:50000" /></div>
+          <div class="form-unit"><label>Instructions</label><textarea id="cr-guide-body" class="input-field" rows="3" placeholder="Details..."></textarea></div>
+          <div style="display:flex; gap:10px; justify-content:flex-end;">
+            <button class="btn-editorial" style="background:transparent; display:none;" id="cancel-guide-edit-btn" onclick="resetGuidelineForm()">Clear</button>
+            <button class="btn-editorial" onclick="saveOrUpdateGuideline()" id="save-guide-btn">Save & Sync</button>
+          </div>
+        </div>
+        <h4 style="font-size:0.9rem; margin-bottom:10px; color:var(--text-2); font-family:var(--font-biomorph);">Existing Dossiers</h4>
+        <div id="cr-guidelines-list-manager" style="max-height:220px; overflow-y:auto;"></div>
+      </div>
+
+      <!-- Creative Works -->
+      <div id="cr-tab-creative" style="display:none;">
+        <div style="background:rgba(0,0,0,0.3); padding:18px; border-radius:10px; margin-bottom:18px; border:1px solid var(--card-border);">
+          <h4 style="font-size:0.95rem; margin-bottom:12px; color:var(--accent-warm);" id="creative-form-heading">Pin Creative Sheet</h4>
+          <input type="hidden" id="cr-creative-id" value="" />
+          <div class="form-unit"><label>Title</label><input type="text" id="cr-creative-title" class="input-field" placeholder="Title..." /></div>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+            <div class="form-unit"><label>Author</label><input type="text" id="cr-creative-author" class="input-field" placeholder="Author..." /></div>
+            <div class="form-unit"><label>Category</label><select id="cr-creative-cat" class="input-field"><option>Cartography & GIS</option><option>Regional Modeling</option><option>Urban Design</option><option>3D Visualization</option></select></div>
+          </div>
+          <div class="form-unit"><label>Image URL</label><input type="text" id="cr-creative-image" class="input-field" placeholder="https://..." /></div>
+          <div class="form-unit"><label>Description</label><textarea id="cr-creative-desc" class="input-field" rows="2" placeholder="Note..."></textarea></div>
+          <div style="display:flex; gap:10px; justify-content:flex-end;"><button class="btn-editorial" style="background:transparent; display:none;" id="cancel-creative-edit-btn" onclick="resetCreativeForm()">Clear</button><button class="btn-editorial" id="save-creative-btn" onclick="saveCreativeWork()">Pin Work & Sync</button></div>
+        </div>
+        <div id="cr-creative-list-manager" style="max-height:220px; overflow-y:auto;"></div>
+      </div>
+
+      <!-- Class Blogs -->
+      <div id="cr-tab-blogs" style="display:none;">
+        <div style="background:rgba(0,0,0,0.3); padding:18px; border-radius:10px; margin-bottom:18px; border:1px solid var(--card-border);">
+          <h4 style="font-size:0.95rem; margin-bottom:12px; color:var(--accent-warm);" id="blog-form-heading">Publish Article</h4>
+          <input type="hidden" id="cr-blog-id" value="" />
+          <div class="form-unit"><label>Title</label><input type="text" id="cr-blog-title" class="input-field" placeholder="Headline..." /></div>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+            <div class="form-unit"><label>Author</label><input type="text" id="cr-blog-author" class="input-field" placeholder="Author..." /></div>
+            <div class="form-unit"><label>Topic Tag</label><input type="text" id="cr-blog-tag" class="input-field" placeholder="Tag..." /></div>
+          </div>
+          <div class="form-unit"><label>Body Content</label><textarea id="cr-blog-body" class="input-field" rows="4" placeholder="Essay..."></textarea></div>
+          <div style="display:flex; gap:10px; justify-content:flex-end;"><button class="btn-editorial" style="background:transparent; display:none;" id="cancel-blog-edit-btn" onclick="resetBlogForm()">Clear</button><button class="btn-editorial" id="save-blog-btn" onclick="saveBlogPost()">Publish & Sync</button></div>
+        </div>
+        <div id="cr-blogs-list-manager" style="max-height:220px; overflow-y:auto;"></div>
+      </div>
+
+      <!-- Feed Moderation -->
+      <div id="cr-tab-suggestions" style="display:none;">
+        <h4 style="font-size:0.95rem; margin-bottom:12px; color:var(--accent-warm); font-family:var(--font-serif);">Moderate Studio Feed</h4>
+        <div id="cr-suggestions-moderation-list" style="max-height:260px; overflow-y:auto;"></div>
+      </div>
+
+      <!-- Notices -->
+      <div id="cr-tab-notices" style="display:none;">
+        <div style="background:rgba(0,0,0,0.3); padding:18px; border-radius:10px; margin-bottom:18px; border:1px solid var(--card-border);">
+          <h4 style="font-size:0.95rem; margin-bottom:12px; color:var(--accent-warm);">Post Notice</h4>
+          <input type="hidden" id="cr-notice-id" value="" />
+          <div class="form-unit"><label>Headline</label><input type="text" id="cr-notice-title" class="input-field" placeholder="Title..." /></div>
+          <div class="form-unit"><label>Details</label><textarea id="cr-notice-desc" class="input-field" rows="2" placeholder="Details..."></textarea></div>
+          <div style="display:flex; gap:10px; justify-content:flex-end;">
+            <button class="btn-editorial" onclick="resetNoticeForm()">Clear</button>
+            <button class="btn-editorial" onclick="saveOrUpdateNotice()">Save & Sync</button>
+          </div>
+        </div>
+        <div id="cr-notices-list-manager" style="max-height:220px; overflow-y:auto;"></div>
+      </div>
+
+      <!-- Timetable -->
+      <div id="cr-tab-tt" style="display:none;">
+        <div class="form-unit">
+          <label>Select Day</label>
+          <select id="cr-tt-day" class="input-field" onchange="loadDaySlotsIntoEditor()">
+            <option value="Monday">Monday</option>
+            <option value="Tuesday">Tuesday</option>
+            <option value="Wednesday">Wednesday</option>
+            <option value="Thursday">Thursday</option>
+            <option value="Friday">Friday</option>
+          </select>
+        </div>
+        <div id="cr-tt-slots-editor" style="display:grid; grid-template-columns:repeat(3, 1fr); gap:10px;"></div>
+        <button class="btn-editorial" style="margin-top:14px;" onclick="saveDayTimetableChanges()">Save Schedule & Sync</button>
+      </div>
+
+      <!-- Broadcast & Instant Class Link Generator -->
+      <div id="cr-tab-broadcast" style="display:none;">
+        <div style="background:rgba(0,0,0,0.3); padding:18px; border-radius:10px; border:1px solid var(--card-border);">
+          <h4 style="font-size:1.05rem; margin-bottom:10px; color:#4ade80;">📢 Instant Class Sharing & WhatsApp Broadcast</h4>
+          <p style="font-size:0.75rem; color:var(--text-2); margin-bottom:12px;">The class link always shows the latest data you save here, on every phone and PC, with no need to re-share. Use this to nudge classmates on WhatsApp.</p>
+          <div class="form-unit"><textarea id="cr-wa-preview-text" class="input-field" rows="6"></textarea></div>
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-top:14px; gap:8px;">
+            <button class="btn-editorial" onclick="copyClassShareLink()">🔗 Copy Class Link</button>
+            <button class="btn-editorial btn-whatsapp" onclick="dispatchWhatsAppFromCR()">🚀 Send WhatsApp Broadcast</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Settings -->
+      <div id="cr-tab-settings" style="display:none;">
+        <div class="form-unit"><label>Marquee Dispatch Text</label><input type="text" id="cr-marquee-input" class="input-field" /></div>
+        <div class="form-unit"><label>Wallpaper URL</label><input type="text" id="cr-wallpaper-url" class="input-field" placeholder="https://..." /></div>
+        <div class="form-unit"><label>New CR Passcode (leave blank to keep current)</label><input type="password" id="cr-new-passcode" class="input-field" placeholder="At least 4 characters..." autocomplete="new-password" /></div>
+        <button class="btn-editorial" onclick="saveCRSettings()">Apply Settings</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // --- 1. DEFAULT STUDIO REGISTRY DATA ---
+    const defaultScholars = [
+      { roll: "M250203AR", name: "Aavani P Vas", dob: "17/12/2001", email: "aavani_m250203ar@nitc.ac.in", blood: "O+", phone: "" },
+      { roll: "M250628AR", name: "Aishwarya S", dob: "22/10/2000", email: "aishwarya_m250628ar@nitc.ac.in", blood: "A+", phone: "" },
+      { roll: "M250255AR", name: "Anju Athmanandan Pillai", dob: "31/10/1999", email: "anju_m250255ar@nitc.ac.in", blood: "B+", phone: "" },
+      { roll: "M250718AR", name: "Aysha Rifa K K", dob: "26/07/2000", email: "aysha_m250718ar@nitc.ac.in", blood: "O+", phone: "" },
+      { roll: "M250725AR", name: "Bhavi Chandrakar", dob: "07/10/2000", email: "bhavi_m250725ar@nitc.ac.in", blood: "B+", phone: "" },
+      { roll: "M250727AR", name: "Bhukya kavitha", dob: "06/07/1997", email: "bhukya_m250727ar@nitc.ac.in", blood: "A+", phone: "" },
+      { roll: "M250744AR", name: "Devidharshini G", dob: "28/04/2002", email: "devidharshini_m250744ar@nitc.ac.in", blood: "O+", phone: "" },
+      { roll: "M250762AR", name: "Fasna shireen A", dob: "10/07/1994", email: "fasna_m250762ar@nitc.ac.in", blood: "AB+", phone: "" },
+      { roll: "M251220AR", name: "I aakash", dob: "20/02/2002", email: "aakash_m251220ar@nitc.ac.in", blood: "B+", phone: "" },
+      { roll: "M251212AR", name: "Joseph Irakoze", dob: "01/01/2001", email: "joseph_m251212ar@nitc.ac.in", blood: "O-", phone: "" },
+      { roll: "M250359AR", name: "K P Prathyush", dob: "18/02/2001", email: "prathyush_m250359ar@nitc.ac.in", blood: "A+", phone: "" },
+      { roll: "M250884AR", name: "Monmi Sarma", dob: "30/11/2000", email: "monmi_m250884ar@nitc.ac.in", blood: "O+", phone: "" },
+      { roll: "M250434AR", name: "Nasreen Nazer Melethil", dob: "29/05/2001", email: "nasreen_m250434ar@nitc.ac.in", blood: "B+", phone: "" },
+      { roll: "M250913AR", name: "Niha Alsham A", dob: "28/08/1999", email: "niha_m250913ar@nitc.ac.in", blood: "A-", phone: "" },
+      { roll: "M250464AR", name: "Puvearasan VM", dob: "10/10/1994", email: "puvearasan_m250464ar@nitc.ac.in", blood: "O+", phone: "" },
+      { roll: "M250972AR", name: "Rakoti Varsha", dob: "06/04/2003", email: "rakoti_m250972ar@nitc.ac.in", blood: "AB+", phone: "" },
+      { roll: "M251014AR", name: "Sanjay Kumar S", dob: "23/11/2002", email: "sanjaykumar_m251014ar@nitc.ac.in", blood: "B+", phone: "" },
+      { roll: "M251076AR", name: "Surabhi C", dob: "10/09/1996", email: "surabhi_m251076ar@nitc.ac.in", blood: "O+", phone: "" },
+      { roll: "M251079AR", name: "Surya Danush S", dob: "18/09/2002", email: "surya_danush_m251079ar@nitc.ac.in", blood: "A+", phone: "" },
+      { roll: "M251132AR", name: "Yuvrajkumar Sambhaji Kamble", dob: "26/08/2000", email: "yuvrajkumar_m251132ar@nitc.ac.in", blood: "B+", phone: "" }
+    ];
+
+    const slotTimings = [
+      { num: 1, start: "08:00", end: "09:00", label: "08:00am - 09:00am" },
+      { num: 2, start: "09:00", end: "10:00", label: "09:00am - 10:00am" },
+      { num: 3, start: "10:00", end: "11:00", label: "10:00am - 11:00am" },
+      { num: 4, start: "11:00", end: "12:00", label: "11:00am - 12:00pm" },
+      { num: 5, start: "12:00", end: "13:00", label: "12:00pm - 01:00pm" },
+      { num: 6, start: "13:00", end: "14:00", label: "01:00pm - 02:00pm" },
+      { num: 7, start: "14:00", end: "15:00", label: "02:00pm - 03:00pm" },
+      { num: 8, start: "15:00", end: "16:00", label: "03:00pm - 04:00pm" },
+      { num: 9, start: "16:00", end: "17:00", label: "04:00pm - 05:00pm" }
+    ];
+
+    const defaultTimetable = {
+      Monday:    ["-", "RMP", "PS-III", "PS-III", "-", "LB", "PS-III", "PS-III", "PS-III"],
+      Tuesday:   ["-", "UHI", "UEF", "UEF", "-", "LB", "DTP", "DTP", "DTP"],
+      Wednesday: ["-", "UEF", "UHI", "PSC", "-", "LB", "TAD", "TAD", "TAD"],
+      Thursday:  ["-", "-", "-", "PSC", "-", "LB", "TAD", "TAD", "TAD"],
+      Friday:    ["-", "RMP", "RMP", "PSC", "UHI", "LB", "PS-III", "PS-III", "PS-III"]
+    };
+
+    const defaultGuidelines = [
+      {
+        id: 1,
+        subject: "PS-III",
+        title: "Regional Plan Delineation & Cartographic Submissions",
+        image: "https://images.unsplash.com/photo-1524813686514-a57563d77d66?auto=format&fit=crop&w=800&q=80",
+        specs: ["A1 Landscape Sheets (Min. 300 DPI)", "1:50,000 & 1:25,000 Scale Bar", "Physical Pin-up at AB204", "Vector GeoTIFF & PDF"],
+        body: "All studio groups must compile regional land use zoning, corridor transport nodes, and wetland demarcations. Pin-up mandatory before 9:15 AM."
+      },
+      {
+        id: 2,
+        subject: "UEF",
+        title: "Real Estate Economics & Automated Valuation Models",
+        image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=800&q=80",
+        specs: ["Formatted Technical Memo", "Hedonic Pricing Model Scripts", "Spatial Regression Maps", "AB204 Drive Submission"],
+        body: "Individual submissions documenting property index trends, infrastructural capitalization variables, and land rent gradient diagrams."
+      },
+      {
+        id: 3,
+        subject: "TAD",
+        title: "Transportation Network Capacity & OD Volume Flow",
+        image: "https://images.unsplash.com/photo-1449824913935-59a10b8d2000?auto=format&fit=crop&w=800&q=80",
+        specs: ["A2 Spatial Flow Chart", "Peak Hour Volume Ratios", "Corridor Bottleneck Analysis", "Survey Annexure Sheet"],
+        body: "Synthesize field survey data for passenger car units across major regional bottlenecks with mitigation transit alignments."
+      }
+    ];
+
+    const defaultCreativeWorks = [
+      {
+        id: 1,
+        title: "Kozhikode Coastal Settlement Elevation Transect",
+        author: "Devidharshini G",
+        category: "Cartography & GIS",
+        image: "https://images.unsplash.com/photo-1519999482648-25049ddd37b1?auto=format&fit=crop&w=800&q=80",
+        desc: "InSAR elevation models showing low-lying micro-topographic shifts along the Malabar coastal delta.",
+        likes: 12
+      },
+      {
+        id: 2,
+        title: "Western Freight Alignment Flow & Node Matrix",
+        author: "K P Prathyush",
+        category: "Regional Modeling",
+        image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=800&q=80",
+        desc: "Multi-modal logistics node integration along industrial high-speed corridors.",
+        likes: 19
+      },
+      {
+        id: 3,
+        title: "Autonomous Public Transit Isochrone Study",
+        author: "Aavani P Vas",
+        category: "3D Visualization",
+        image: "https://images.unsplash.com/photo-1477959858617-67f30bc75b82?auto=format&fit=crop&w=800&q=80",
+        desc: "15-minute accessibility envelopes based on multi-source spatial point-of-interest data.",
+        likes: 15
+      }
+    ];
+
+    const defaultClassBlogs = [
+      {
+        id: 1,
+        title: "The Hydro-Spatial Paradox of Frontier Riverine Settlements",
+        author: "Editorial Studio Desk",
+        tag: "Spatial Research",
+        date: "October 2026",
+        excerpt: "Exploring silent topographic shifts along emerging river corridor settlements...",
+        body: "Rapid urbanization along peri-urban river corridors poses a distinct spatial challenge. Overlaying multi-temporal Sentinel-1 radar datasets with ground-truthed hydrological logs proves displacement is an urban economic indicator.",
+        likes: 24
+      },
+      {
+        id: 2,
+        title: "From PCU Bottlenecks to Transit Equity: Field Notes from AB204",
+        author: "M.Plan Studio Cohort",
+        tag: "Transportation Planning",
+        date: "October 2026",
+        excerpt: "Why standard peak hour passenger car unit ratios often miss the qualitative lived experience...",
+        body: "Field measurements at identified regional nodes often highlight high volume-to-capacity ratios, yet conventional highway widening invariably triggers induced travel demand.",
+        likes: 18
+      }
+    ];
+
+    const defaultSuggestions = [
+      {
+        id: 1,
+        author: "Devidharshini G",
+        title: "Request for Extended AB204 Studio Plotter Lab Access",
+        body: "Can we request departmental permission for night access to the A0 GIS plotter ahead of Thursday's regional review?",
+        date: "Oct 3, 2026",
+        likes: 14,
+        responses: [
+          { author: "CR Desk", text: "Permission request forwarded to HoD. Lab will remain open until 10 PM this Wednesday.", date: "Oct 3" }
+        ]
+      },
+      {
+        id: 2,
+        author: "Sanjay Kumar S",
+        title: "Shared Transit Matrix QGIS Repository",
+        body: "Should we organize all shapefiles and origin-destination PCU survey matrices into an indexed drive folder?",
+        date: "Oct 4, 2026",
+        likes: 9,
+        responses: [
+          { author: "K P Prathyush", text: "Great idea, folder structure is already drafted under the S3 GIS shared drive.", date: "Oct 4" }
+        ]
+      }
+    ];
+
+    const defaultAnnouncements = [
+      { id: 1, title: "URBAN OCTOBER - WORLD HABITAT DAY", desc: "Lets celebrate URBAN OCTOBER with special reviews and lectures.", date: "2026-10-05" },
+      { id: 2, title: "PS-III Interim Review AB204", desc: "Keep physical drafts of regional overlays and transport networks pinned by 9:30 AM.", date: "2026-10-06" }
+    ];
+
+    const defaultDeadlines = [
+      { id: 1, title: "PS-III Mid Term Review Discussion", subject: "PS-III", date: "2026-10-05", desc: "Corridor plan review with faculty panel." },
+      { id: 2, title: "UEF Assignment", subject: "UEF", date: "2026-10-05", desc: "Automated Valuation Model script submission." },
+      { id: 3, title: "RMP Assignment", subject: "RMP", date: "2026-10-05", desc: "Research methodology paper draft." },
+      { id: 4, title: "PS-III Studio Progress Review", subject: "PS-III", date: "2026-10-09", desc: "Full corridor development model review with jury." }
+    ];
+
+    // --- 2. SHARED CLOUD STATE ENGINE ---
+    // The master copy of every piece of data lives on the server (/api).
+    // The class link and the CR link both READ it. Only the CR link can WRITE
+    // CR-owned content (passcode is verified on the server), so every CR edit is
+    // visible to the whole class automatically — no re-sharing needed.
+    const urlParams = new URLSearchParams(window.location.search);
+    const isCRMode = (urlParams.get('role') === 'cr' || window.location.hash.includes('cr-suite'));
+    const DEFAULT_MARQUEE = "World Habitat Day on 05-10-26, 10 AM onwards • Conference Hall • Department of Architecture & Planning, NIT Calicut";
+    const CACHE_KEY = 'plaxus_cache_v2';
+    const POLL_MS = 12000;
+
+    function readCache() {
+      try { const r = localStorage.getItem(CACHE_KEY); return r ? JSON.parse(r) : null; } catch (e) { return null; }
+    }
+    function writeCache(st) {
+      try { localStorage.setItem(CACHE_KEY, JSON.stringify(st)); } catch (e) { /* quota: ignore */ }
+    }
+    // CR link only: if this browser holds data saved by the OLD version, use it to seed the cloud once.
+    function readLegacyLocal() {
+      if (!isCRMode) return null;
+      try {
+        const j = (k) => { const r = localStorage.getItem(k); return r ? JSON.parse(r) : undefined; };
+        const st = {
+          scholars: j('plaxus_scholars'), timetable: j('plaxus_timetable'), guidelines: j('plaxus_guidelines'),
+          creativeWorks: j('plaxus_creative_works'), classBlogs: j('plaxus_class_blogs'), suggestions: j('plaxus_suggestions'),
+          announcements: j('plaxus_announcements'), deadlines: j('plaxus_deadlines'),
+          marqueeText: localStorage.getItem('plaxus_marquee') || undefined,
+          userBg: localStorage.getItem('plaxus_user_bg') || undefined,
+          classPhoto: localStorage.getItem('plaxus_class_photo') || undefined
+        };
+        return Object.values(st).some(v => v !== undefined) ? st : null;
+      } catch (e) { return null; }
+    }
+
+    const _boot = readCache() || readLegacyLocal() || {};
+    const _arr = (v, d) => (Array.isArray(v) ? v : d);
+    let scholars = _arr(_boot.scholars, defaultScholars);
+    let timetable = (_boot.timetable && typeof _boot.timetable === 'object') ? _boot.timetable : defaultTimetable;
+    let guidelines = _arr(_boot.guidelines, defaultGuidelines);
+    let creativeWorks = _arr(_boot.creativeWorks, defaultCreativeWorks);
+    let classBlogs = _arr(_boot.classBlogs, defaultClassBlogs);
+    let suggestions = _arr(_boot.suggestions, defaultSuggestions);
+    let announcements = _arr(_boot.announcements, defaultAnnouncements);
+    let deadlines = _arr(_boot.deadlines, defaultDeadlines);
+    let marqueeText = (typeof _boot.marqueeText === 'string' && _boot.marqueeText) ? _boot.marqueeText : DEFAULT_MARQUEE;
+    let userBg = typeof _boot.userBg === 'string' ? _boot.userBg : '';
+    let classPhoto = typeof _boot.classPhoto === 'string' ? _boot.classPhoto : '';
+
+    let stateVersion = 0;
+    let serverEmpty = false;
+    let loadingState = false;
+    let crPass = isCRMode ? (sessionStorage.getItem('plaxus_cr_pass') || '') : '';
+
+    function currentStateObject() {
+      return {
+        scholars: scholars.map(s => (s.photo && s.photo.length > 70000) ? Object.assign({}, s, { photo: undefined }) : s),
+        timetable, guidelines, creativeWorks, classBlogs, suggestions, announcements, deadlines,
+        marqueeText, userBg, classPhoto: classPhoto.length > 1100000 ? '' : classPhoto
+      };
+    }
+
+    function applyState(st) {
+      if (!st) return;
+      if (Array.isArray(st.scholars)) scholars = st.scholars;
+      if (st.timetable && typeof st.timetable === 'object') timetable = st.timetable;
+      if (Array.isArray(st.guidelines)) guidelines = st.guidelines;
+      if (Array.isArray(st.creativeWorks)) creativeWorks = st.creativeWorks;
+      if (Array.isArray(st.classBlogs)) classBlogs = st.classBlogs;
+      if (Array.isArray(st.suggestions)) suggestions = st.suggestions;
+      if (Array.isArray(st.announcements)) announcements = st.announcements;
+      if (Array.isArray(st.deadlines)) deadlines = st.deadlines;
+      if (typeof st.marqueeText === 'string' && st.marqueeText) marqueeText = st.marqueeText;
+      if (typeof st.userBg === 'string') userBg = st.userBg;
+      if (typeof st.classPhoto === 'string') classPhoto = st.classPhoto;
+      if (st.version) stateVersion = st.version;
+      writeCache(st);
+    }
+
+    function setSync(mode) {
+      const el = document.getElementById('sync-status-indicator');
+      if (!el) return;
+      const t = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      const map = {
+        ok: ['#22c55e', `● LIVE • SYNCED ${t}`],
+        empty: ['#eab308', isCRMode ? '● CLOUD EMPTY — UNLOCK TO PUBLISH' : '● AWAITING FIRST CR PUBLISH'],
+        offline: ['#eab308', '● OFFLINE — SHOWING LAST SAVED'],
+        nobackend: ['#f43f5e', '● CLOUD NOT CONNECTED']
+      };
+      const m = map[mode] || map.ok;
+      el.style.color = m[0];
+      el.textContent = m[1];
+    }
+
+    let _toastTimer = null;
+    function toast(msg, isErr) {
+      let t = document.getElementById('plaxus-toast');
+      if (!t) { t = document.createElement('div'); t.id = 'plaxus-toast'; document.body.appendChild(t); }
+      t.textContent = msg;
+      t.className = (isErr ? 'err ' : '') + 'show';
+      clearTimeout(_toastTimer);
+      _toastTimer = setTimeout(() => { t.className = isErr ? 'err' : ''; }, 3200);
+    }
+
+    async function loadState(force = false) {
+      if (loadingState) return;
+      loadingState = true;
+      try {
+        let res;
+        try {
+          res = await fetch(`/api/state?v=${force ? 0 : stateVersion}&t=${Date.now()}`, { cache: 'no-store' });
+        } catch (netErr) { setSync('offline'); return; }
+        const ct = res.headers.get('content-type') || '';
+        if (!res.ok || !ct.includes('json')) { setSync('nobackend'); return; }
+        const data = await res.json();
+        if (data.empty) {
+          serverEmpty = true;
+          setSync('empty');
+          if (isCRMode && crPass) await seedServer();
+          return;
+        }
+        serverEmpty = false;
+        if (data.unchanged) { setSync('ok'); return; }
+        applyState(data.state);
+        renderEverything();
+        refreshCRManagers();
+        setSync('ok');
+      } catch (e) {
+        setSync('nobackend');
+      } finally {
+        loadingState = false;
+      }
+    }
+
+    async function seedServer() {
+      try {
+        const res = await fetch('/api/cr', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'x-cr-passcode': encodeURIComponent(crPass) },
+          body: JSON.stringify({ op: 'seed', state: currentStateObject() })
+        });
+        const data = await res.json().catch(() => null);
+        if (res.status === 401) { forgetCR(); return; }
+        if (res.ok && data && data.state) {
+          serverEmpty = false;
+          applyState(data.state);
+          renderEverything();
+          setSync('ok');
+          toast('Cloud database initialised — class link is now live ✓');
+        } else {
+          setSync('nobackend');
+        }
+      } catch (e) { setSync('offline'); }
+    }
+
+    function userIsBusy() {
+      const modalOpen = Array.from(document.querySelectorAll('.modal-backdrop-editorial')).some(m => m.style.display === 'flex');
+      if (modalOpen) return true;
+      const a = document.activeElement;
+      return !!(a && /^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName) && a.id !== 'search-student');
+    }
+
+    function startLivePolling() {
+      loadState(true);
+      setInterval(() => { if (!document.hidden && !userIsBusy()) loadState(); }, POLL_MS);
+      document.addEventListener('visibilitychange', () => { if (!document.hidden && !userIsBusy()) loadState(); });
+      window.addEventListener('focus', () => { if (!userIsBusy()) loadState(); });
+      window.addEventListener('online', () => loadState(true));
+    }
+
+    // ---- network helpers ----
+    async function postJSON(path, body, headers) {
+      let res;
+      try {
+        res = await fetch(path, { method: 'POST', headers: Object.assign({ 'Content-Type': 'application/json' }, headers || {}), body: JSON.stringify(body) });
+      } catch (e) { throw new Error('You appear to be offline. Please try again.'); }
+      const data = await res.json().catch(() => null);
+      return { res, data };
+    }
+
+    // Public actions (likes, suggestions, replies, scholar self-service) — no passcode.
+    async function actCall(body) {
+      if (serverEmpty) throw new Error('The CR has not published the dashboard yet.');
+      const { res, data } = await postJSON('/api/act', body);
+      if (res.status === 404) throw new Error('Cloud backend is not connected yet.');
+      if (!res.ok || !data || !data.state) throw new Error((data && data.error) || 'Server error');
+      applyState(data.state);
+      setSync('ok');
+      return data.state;
+    }
+
+    // CR actions — passcode verified on the server for every single write.
+    async function crCall(body) {
+      if (!crPass) { openCRAuthModal(); throw new Error('Please unlock the CR desk first.'); }
+      const { res, data } = await postJSON('/api/cr', body, { 'x-cr-passcode': encodeURIComponent(crPass) });
+      if (res.status === 401) { forgetCR(); openCRAuthModal(); throw new Error('Passcode rejected or changed. Please unlock again.'); }
+      if (res.status === 404) throw new Error('Cloud backend is not connected yet.');
+      if (!res.ok || !data) throw new Error((data && data.error) || 'Server error');
+      if (data.state) { applyState(data.state); setSync('ok'); }
+      return data;
+    }
+
+    function forgetCR() { crPass = ''; sessionStorage.removeItem('plaxus_cr_pass'); }
+    function ensureCR() { if (crPass) return true; openCRAuthModal(); return false; }
+
+    function readSection(k) {
+      switch (k) {
+        case 'timetable': return timetable;
+        case 'guidelines': return guidelines;
+        case 'creativeWorks': return creativeWorks;
+        case 'classBlogs': return classBlogs;
+        case 'announcements': return announcements;
+        case 'deadlines': return deadlines;
+        case 'marqueeText': return marqueeText;
+        case 'userBg': return userBg;
+        case 'classPhoto': return classPhoto;
+        default: return undefined;
+      }
+    }
+
+    // Save one or more CR-owned sections to the cloud. Rolls back to server truth on failure.
+    async function crSave(keys, okMessage) {
+      const sections = {};
+      keys.forEach(k => { sections[k] = readSection(k); });
+      try {
+        await crCall({ op: 'save', sections });
+        renderEverything();
+        refreshCRManagers();
+        toast(okMessage || 'Saved — live for the whole class ✓');
+        return true;
+      } catch (e) {
+        toast(e.message || 'Could not save', true);
+        await loadState(true);
+        return false;
+      }
+    }
+
+    // Generic CR operation (delete suggestion, scholar edits, ...).
+    async function crOp(body, okMessage) {
+      try {
+        await crCall(body);
+        renderEverything();
+        refreshCRManagers();
+        toast(okMessage || 'Saved — live for the whole class ✓');
+        return true;
+      } catch (e) {
+        toast(e.message || 'Could not save', true);
+        return false;
+      }
+    }
+
+    function refreshCRManagers() {
+      if (!isCRMode) return;
+      const m = document.getElementById('crSuiteModal');
+      if (!m || m.style.display !== 'flex') return;
+      renderCRDeadlinesManager(); renderCRGuidelinesManager(); renderCRCreativeManager();
+      renderCRBlogsManager(); renderCRSuggestionsManager(); renderCRNoticesManager();
+    }
+
+    // ---- role handling: the class link has NO CR UI at all (it is removed from the page) ----
+    function applyRolePermissions() {
+      if (isCRMode) {
+        document.body.classList.add('cr-mode');
+        const topBanner = document.getElementById('cr-top-deck-banner');
+        const headerControls = document.getElementById('header-cr-controls');
+        if (topBanner) topBanner.style.display = 'flex';
+        if (headerControls) headerControls.style.display = 'flex';
+        document.querySelectorAll('.cr-only-btn').forEach(btn => btn.style.display = 'inline-flex');
+      } else {
+        document.querySelectorAll('.cr-only-btn, #cr-top-deck-banner, #header-cr-controls, #crAuthModal, #crSuiteModal, #crScholarModal').forEach(el => el.remove());
+      }
+    }
+
+    // Plain class link (never contains CR access or data blobs).
+    function classLinkUrl() { return window.location.origin + window.location.pathname; }
+
+    function copyClassShareLink() {
+      const link = classLinkUrl();
+      navigator.clipboard.writeText(link).then(() => {
+        toast('Class link copied — it always shows the latest data ✓');
+      }).catch(() => { prompt('Copy the class link:', link); });
+    }
+
+    // ---- helpers ----
+    function safeUrl(u) { return (typeof u === 'string' && /^(https?:\/\/|data:image\/)/i.test(u)) ? u : ''; }
+    function resizeImageFile(file, maxDim, quality) {
+      return new Promise((resolve, reject) => {
+        const fr = new FileReader();
+        fr.onerror = reject;
+        fr.onload = () => {
+          const img = new Image();
+          img.onerror = reject;
+          img.onload = () => {
+            const k = Math.min(1, maxDim / Math.max(img.width, img.height));
+            const w = Math.max(1, Math.round(img.width * k)), h = Math.max(1, Math.round(img.height * k));
+            const c = document.createElement('canvas');
+            c.width = w; c.height = h;
+            c.getContext('2d').drawImage(img, 0, 0, w, h);
+            resolve(c.toDataURL('image/jpeg', quality));
+          };
+          img.src = fr.result;
+        };
+        fr.readAsDataURL(file);
+      });
+    }
+    const crTools = (editCall, delCall) => isCRMode ? `<span class="cr-row-tools"><button class="icon-btn cr-only-btn" title="Edit" onclick="${editCall}">✏</button><button class="icon-btn danger cr-only-btn" title="Delete" onclick="${delCall}">🗑</button></span>` : '';
+
+    // --- 5. CURSOR ENGINE ---
+    const cursorDot = document.getElementById('cursor-dot');
+    const cursorRing = document.getElementById('cursor-ring');
+    let mouseX = 0, mouseY = 0, ringX = 0, ringY = 0;
+
+    window.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      if (cursorDot) {
+        cursorDot.style.left = `${mouseX}px`;
+        cursorDot.style.top = `${mouseY}px`;
+      }
+      document.documentElement.style.setProperty('--x', `${mouseX}px`);
+      document.documentElement.style.setProperty('--y', `${mouseY}px`);
+    });
+
+    function renderCursor() {
+      ringX += (mouseX - ringX) * 0.18;
+      ringY += (mouseY - ringY) * 0.18;
+      if (cursorRing) {
+        cursorRing.style.left = `${ringX}px`;
+        cursorRing.style.top = `${ringY}px`;
+      }
+      requestAnimationFrame(renderCursor);
+    }
+    requestAnimationFrame(renderCursor);
+
+    document.addEventListener('mouseover', (e) => {
+      if (e.target.closest('button, a, input, select, textarea, .mag-plate, .cal-day-cell, td')) {
+        document.body.classList.add('cursor-hovering');
+      }
+    });
+    document.addEventListener('mouseout', (e) => {
+      if (e.target.closest('button, a, input, select, textarea, .mag-plate, .cal-day-cell, td')) {
+        document.body.classList.remove('cursor-hovering');
+      }
+    });
+
+    // --- 6. CLOCK & COCKPIT TIMETABLE MATRIX ---
+    function updateClock() {
+      const now = new Date();
+      let hours = now.getHours();
+      const minutes = String(now.getMinutes()).padStart(2, '0');
+      const seconds = String(now.getSeconds()).padStart(2, '0');
+      const ampm = hours >= 12 ? 'PM' : 'AM';
+      hours = hours % 12 || 12;
+      const hoursStr = String(hours).padStart(2, '0');
+
+      const hmElem = document.getElementById('chrono-hours-min');
+      const secElem = document.getElementById('chrono-sec');
+      const ampmElem = document.getElementById('chrono-ampm');
+      const dateElem = document.getElementById('chrono-date-line');
+
+      if (hmElem) hmElem.textContent = `${hoursStr}:${minutes}`;
+      if (secElem) secElem.textContent = `:${seconds}`;
+      if (ampmElem) ampmElem.textContent = ampm;
+      if (dateElem) {
+        dateElem.textContent = now.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+      }
+    }
+    setInterval(updateClock, 1000);
+
+    function updateCockpitHours() {
+      const now = new Date();
+      const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+      const currentDay = dayNames[now.getDay()];
+      const isWeekend = (currentDay === "Sunday" || currentDay === "Saturday");
+      const currentMinutes = now.getHours() * 60 + now.getMinutes();
+      const daySlots = (!isWeekend && timetable[currentDay]) ? timetable[currentDay] : [];
+
+      const daynameElem = document.getElementById('cockpit-today-dayname');
+      const titleElem = document.getElementById('cockpit-today-title');
+      const descElem = document.getElementById('cockpit-today-desc');
+
+      if (daynameElem) daynameElem.textContent = currentDay;
+      if (isWeekend || !daySlots.length) {
+        if (titleElem) titleElem.textContent = "Weekend Recess";
+        if (descElem) descElem.textContent = "No scheduled lectures today. Studio AB204 open.";
+      } else {
+        const activeCourseSlots = daySlots.filter(s => s !== '-' && s !== 'LB');
+        if (titleElem) titleElem.textContent = `${activeCourseSlots.length} Classes Today`;
+        if (descElem) descElem.textContent = `9 periods scheduled for ${currentDay} in AB204.`;
+      }
+
+      let currentSlotIndex = -1;
+      let currentActiveSlot = null;
+      slotTimings.forEach((st, idx) => {
+        const [sh, sm] = st.start.split(':').map(Number);
+        const [eh, em] = st.end.split(':').map(Number);
+        const startMins = sh * 60 + sm;
+        const endMins = eh * 60 + em;
+        if (currentMinutes >= startMins && currentMinutes < endMins) {
+          currentActiveSlot = st;
+          currentSlotIndex = idx;
+        }
+      });
+
+      const codeElem = document.getElementById('cockpit-current-code');
+      const timeElem = document.getElementById('cockpit-current-time');
+      const roomElem = document.getElementById('cockpit-current-room');
+      const statusElem = document.getElementById('cockpit-current-status');
+
+      if (!isWeekend && currentSlotIndex !== -1 && daySlots[currentSlotIndex]) {
+        const code = daySlots[currentSlotIndex];
+        codeElem.textContent = (code === '-') ? 'Free Studio' : (code === 'LB' ? 'Lunch Break' : code);
+        timeElem.textContent = `${currentActiveSlot.label} (Slot ${currentActiveSlot.num})`;
+        roomElem.textContent = (code === 'LB') ? 'Break Hours' : 'Studio AB204';
+        statusElem.textContent = 'LIVE NOW';
+        statusElem.style.color = '#22c55e';
+      } else if (!isWeekend && currentMinutes < 8 * 60) {
+        codeElem.textContent = "Pre-Studio";
+        timeElem.textContent = "Begins at 08:00 AM";
+        roomElem.textContent = "AB204 Open";
+        statusElem.textContent = "UPCOMING";
+        statusElem.style.color = 'var(--cyan)';
+      } else if (!isWeekend && currentMinutes >= 17 * 60) {
+        codeElem.textContent = "Concluded";
+        timeElem.textContent = "Day periods finished";
+        roomElem.textContent = "Studio AB204";
+        statusElem.textContent = "EVENING";
+        statusElem.style.color = 'var(--text-3)';
+      } else {
+        codeElem.textContent = "No Lecture";
+        timeElem.textContent = isWeekend ? "Weekend Recess" : "Break Hours";
+        roomElem.textContent = "Studio AB204";
+        statusElem.textContent = "INACTIVE";
+        statusElem.style.color = 'var(--text-3)';
+      }
+
+      const upcomingContainer = document.getElementById('cockpit-upcoming-timeline');
+      if (upcomingContainer) {
+        upcomingContainer.innerHTML = '';
+        let upcomingCount = 0;
+
+        if (!isWeekend && daySlots.length) {
+          slotTimings.forEach((st, idx) => {
+            const [sh, sm] = st.start.split(':').map(Number);
+            const startMins = sh * 60 + sm;
+            if (startMins > currentMinutes) {
+              upcomingCount++;
+              const code = daySlots[idx] || '-';
+              const chip = document.createElement('div');
+              chip.className = 'timeline-chip';
+              chip.innerHTML = `
+                <div style="font-family:var(--font-biomorph); font-size:0.68rem; color:var(--text-2);">${st.start} Slot ${st.num}</div>
+                <div style="font-weight:700; font-size:0.92rem; ${code !== '-' && code !== 'LB' ? 'color:var(--accent-warm);' : ''}">${code}</div>
+              `;
+              upcomingContainer.appendChild(chip);
+            }
+          });
+        }
+
+        if (upcomingCount === 0) {
+          upcomingContainer.innerHTML = `
+            <div style="font-size:0.75rem; color:var(--text-2); padding:4px 0;">
+              ${isWeekend ? "No lectures on weekends." : "All lecture slots for today have completed."}
+            </div>
+          `;
+          document.getElementById('cockpit-upcoming-tally').textContent = "0 slots left";
+        } else {
+          document.getElementById('cockpit-upcoming-tally').textContent = `${upcomingCount} left today`;
+        }
+      }
+    }
+    setInterval(updateCockpitHours, 30000);
+
+    // --- 7. TAB SLIDER & NAVIGATION ---
+    function scrollTabsNav(offset) {
+      const slider = document.getElementById('mag-tab-slider');
+      if (slider) slider.scrollBy({ left: offset, behavior: 'smooth' });
+    }
+
+    function switchMagSection(secId, btn) {
+      document.querySelectorAll('.tab-section').forEach(s => s.classList.remove('active'));
+      document.querySelectorAll('.mag-index-nav .mag-tab-btn').forEach(b => b.classList.remove('active'));
+      const target = document.getElementById(secId);
+      if (target) target.classList.add('active');
+      if (btn) btn.classList.add('active');
+    }
+
+    // --- 8. MARQUEE & RADAR ALERTS ---
+    function updateBlinkingRemindersMarquee() {
+      const parts = [];
+      if (deadlines && deadlines.length) {
+        const sorted = [...deadlines].sort((a,b) => new Date(a.date) - new Date(b.date));
+        const earliest = sorted[0];
+        const diff = Math.ceil((new Date(earliest.date) - new Date()) / (1000 * 60 * 60 * 24));
+        parts.push(`⚡ DEADLINE: [${earliest.subject}] ${earliest.title} in ${diff > 0 ? diff + ' days' : 'TODAY'} (${earliest.date})`);
+      }
+      if (guidelines && guidelines.length) {
+        parts.push(`📐 DOSSIER: ${guidelines[0].subject} requires ${guidelines[0].specs[0]} & pin-up`);
+      }
+      const missingBloodCount = scholars.filter(s => !s.blood).length;
+      if (missingBloodCount > 0) {
+        parts.push(`👥 REGISTRY: ${missingBloodCount} scholars haven't set Blood Group`);
+      }
+      const marqueeReminders = document.getElementById('marquee-reminders-content');
+      if (marqueeReminders) {
+        marqueeReminders.textContent = parts.length ? parts.join('   ✦   ') : 'Studio AB204 running smoothly.';
+      }
+
+      if (document.getElementById('scholar-badge-count')) document.getElementById('scholar-badge-count').textContent = scholars.length;
+      if (document.getElementById('guidelines-badge-count')) document.getElementById('guidelines-badge-count').textContent = guidelines.length;
+      if (document.getElementById('deadlines-badge-count')) document.getElementById('deadlines-badge-count').textContent = deadlines.length;
+      if (document.getElementById('creative-badge-count')) document.getElementById('creative-badge-count').textContent = creativeWorks.length;
+      if (document.getElementById('blogs-badge-count')) document.getElementById('blogs-badge-count').textContent = classBlogs.length;
+      if (document.getElementById('suggestions-badge-count')) document.getElementById('suggestions-badge-count').textContent = suggestions.length;
+    }
+
+    // --- 9. TIMETABLE MATRIX ---
+    const daysOrder = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
+    let currentFilter = 'all';
+
+    function renderTimetable() {
+      const tbody = document.getElementById('timetable-body');
+      if (!tbody) return;
+      tbody.innerHTML = '';
+      const now = new Date();
+      const currentDayIndex = now.getDay();
+      const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+      const todayName = dayNames[currentDayIndex];
+      const tomorrowName = dayNames[(currentDayIndex + 1) % 7];
+
+      daysOrder.forEach(day => {
+        if (currentFilter !== 'all' && currentFilter !== day) return;
+        const isToday = (day === todayName);
+        const isTomorrow = (day === tomorrowName);
+        const tr = document.createElement('tr');
+        if (isToday) tr.className = 'today-active';
+        else if (isTomorrow) tr.className = 'tomorrow-active';
+        else tr.className = 'day-dimmed';
+
+        const slots = timetable[day] || defaultTimetable[day];
+        let rowHtml = `<td class="col-day">${day}</td>`;
+
+        slots.forEach((slot, idx) => {
+          let badgeClass = 'c-badge';
+          if (slot.includes('RMP')) badgeClass += ' c-rmp';
+          else if (slot.includes('PS-III')) badgeClass += ' c-ps3';
+          else if (slot.includes('UHI')) badgeClass += ' c-uhi';
+          else if (slot.includes('UEF')) badgeClass += ' c-uef';
+          else if (slot.includes('PSC')) badgeClass += ' c-psc';
+          else if (slot.includes('DTP')) badgeClass += ' c-dtp';
+          else if (slot.includes('TAD')) badgeClass += ' c-tad';
+          else if (slot === 'LB') badgeClass += ' c-lb';
+
+          const editAttrs = isCRMode ? ` class="tt-editable" data-day="${day}" data-idx="${idx}" title="Click to edit this slot" onclick="editTimetableCell(this)"` : '';
+          rowHtml += `<td${editAttrs}>${slot === '-' ? '-' : `<span class="${badgeClass}">${escapeHTML(slot)}</span>`}</td>`;
+        });
+        tr.innerHTML = rowHtml;
+        tbody.appendChild(tr);
+      });
+    }
+
+    // CR: click any timetable cell to edit it in place.
+    function editTimetableCell(td) {
+      if (!ensureCR()) return;
+      if (td.querySelector('input')) return;
+      const day = td.dataset.day, idx = parseInt(td.dataset.idx, 10);
+      const slots = (timetable[day] || defaultTimetable[day]).slice();
+      const cur = slots[idx];
+      td.innerHTML = `<input class="tt-inline-input" type="text" maxlength="40" value="${escapeHTML(cur)}" />`;
+      const inp = td.querySelector('input');
+      inp.focus(); inp.select();
+      let done = false;
+      const finish = async (save) => {
+        if (done) return; done = true;
+        const v = inp.value.trim() || '-';
+        if (save && v !== cur) {
+          slots[idx] = v;
+          timetable[day] = slots;
+          await crSave(['timetable'], 'Timetable updated for everyone ✓');
+        } else {
+          renderTimetable();
+        }
+        updateCockpitHours();
+      };
+      inp.addEventListener('keydown', e => {
+        if (e.key === 'Enter') { e.preventDefault(); finish(true); }
+        else if (e.key === 'Escape') { finish(false); }
+      });
+      inp.addEventListener('blur', () => finish(true));
+    }
+
+    function setTimetableView(view, btn) {
+      currentFilter = view;
+      document.querySelectorAll('.timetable-editorial-sheet .mag-tab-btn').forEach(b => b.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+      renderTimetable();
+    }
+
+    // --- 10. SCHOLARS REGISTRY ---
+    function renderScholars() {
+      const container = document.getElementById('scholars-grid');
+      if (!container) return;
+      const q = ((document.getElementById('search-student') || {}).value || '').toLowerCase();
+      const list = q ? scholars.filter(s =>
+        (s.name || '').toLowerCase().includes(q) ||
+        (s.roll || '').toLowerCase().includes(q) ||
+        (s.blood && s.blood.toLowerCase().includes(q)) ||
+        (s.phone && s.phone.includes(q))
+      ) : scholars;
+      container.innerHTML = '';
+      list.forEach((scholar) => {
+        const card = document.createElement('div');
+        card.className = 'mag-plate scholar-plate';
+        const initial = scholar.name ? escapeHTML(scholar.name.charAt(0)) : '?';
+        const photo = safeUrl(scholar.photo);
+        const avatarContent = photo
+          ? `<img src="${photo}" alt="${escapeHTML(scholar.name)}" />`
+          : `<span class="scholar-avatar-init">${initial}</span>`;
+        const bloodOptions = ['A+','A-','B+','B-','O+','O-','AB+','AB-'].map(b => `<option value="${b}" ${scholar.blood === b ? 'selected' : ''}>${b}</option>`).join('');
+        const phoneDigits = (scholar.phone || '').replace(/[^0-9]/g, '');
+
+        card.innerHTML = `
+          <div style="display:flex; gap:14px; align-items:center;">
+            <div class="scholar-avatar-frame" data-roll="${escapeHTML(scholar.roll)}" onclick="triggerScholarPhotoUpload(this.dataset.roll)" title="Tap to upload photo">
+              ${avatarContent}
+            </div>
+            <div style="flex:1; min-width:0;">
+              <div class="scholar-plate-name" title="${escapeHTML(scholar.name)}">${escapeHTML(scholar.name)}</div>
+              <div style="font-family:var(--font-biomorph); font-size:0.75rem; color:var(--accent-warm);">${escapeHTML(scholar.roll)}</div>
+            </div>
+            ${isCRMode ? `<button class="icon-btn cr-only-btn" data-roll="${escapeHTML(scholar.roll)}" title="Edit scholar" onclick="openScholarEditor(this.dataset.roll)">✏</button>` : ''}
+          </div>
+          <div style="font-size:0.78rem; color:var(--text-2); display:flex; flex-direction:column; gap:3px;">
+            <div>🎂 <strong>DOB:</strong> ${escapeHTML(scholar.dob)}</div>
+            <div style="font-family:monospace; font-size:0.72rem;">${escapeHTML(scholar.email)}</div>
+          </div>
+          <div style="display:grid; grid-template-columns:1fr 1.2fr; gap:8px; align-items:center; padding-top:8px; border-top:1px solid rgba(255,255,255,0.06);">
+            <select class="input-field" style="padding:6px 8px; font-size:0.75rem;" data-roll="${escapeHTML(scholar.roll)}" onchange="updateScholarBlood(this.dataset.roll, this.value)">
+              <option value="" ${!scholar.blood ? 'selected' : ''}>Blood Group</option>
+              ${bloodOptions}
+            </select>
+            <input type="tel" class="input-field" style="padding:6px 8px; font-size:0.75rem;" placeholder="Phone" maxlength="20" value="${escapeHTML(scholar.phone || '')}" data-roll="${escapeHTML(scholar.roll)}" onchange="updateScholarPhone(this.dataset.roll, this.value)" />
+          </div>
+          ${phoneDigits ? `
+            <a href="https://wa.me/${phoneDigits}" target="_blank" rel="noopener" class="btn-editorial btn-whatsapp" style="padding:4px 8px; font-size:0.72rem; justify-content:center; margin-top:2px;">
+              💬 Direct WhatsApp
+            </a>
+          ` : ''}
+        `;
+        container.appendChild(card);
+      });
+      document.getElementById('scholar-badge-count').textContent = scholars.length;
+      if (isCRMode) applyRolePermissions();
+    }
+
+    async function updateScholarBlood(roll, val) {
+      try { await actCall({ op: 'scholar_update', roll, blood: val }); updateBlinkingRemindersMarquee(); toast('Saved ✓'); }
+      catch (e) { toast(e.message, true); renderScholars(); }
+    }
+
+    async function updateScholarPhone(roll, val) {
+      try { await actCall({ op: 'scholar_update', roll, phone: val.trim() }); renderScholars(); toast('Saved ✓'); }
+      catch (e) { toast(e.message, true); renderScholars(); }
+    }
+
+    function triggerScholarPhotoUpload(roll) {
+      const input = document.createElement('input');
+      input.type = 'file';
+      input.accept = 'image/*';
+      input.onchange = async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        try {
+          const photo = await resizeImageFile(file, 200, 0.72);
+          await actCall({ op: 'scholar_update', roll, photo });
+          renderScholars();
+          updateBirthdaySpotlight();
+          toast('Photo saved ✓');
+        } catch (err) { toast(err.message || 'Could not upload photo', true); }
+      };
+      input.click();
+    }
+
+    function filterScholars() { renderScholars(); }
+
+    // ---- CR: scholar roster editing ----
+    function openScholarEditor(roll) {
+      if (!ensureCR()) return;
+      const s = roll ? scholars.find(x => x.roll === roll) : null;
+      document.getElementById('scholar-editor-heading').textContent = s ? 'Edit Scholar' : 'Add Scholar';
+      document.getElementById('cr-scholar-orig').value = s ? s.roll : '';
+      document.getElementById('cr-scholar-name').value = s ? s.name : '';
+      document.getElementById('cr-scholar-roll').value = s ? s.roll : '';
+      document.getElementById('cr-scholar-dob').value = s ? (s.dob || '') : '';
+      document.getElementById('cr-scholar-email').value = s ? (s.email || '') : '';
+      document.getElementById('cr-scholar-delete-btn').style.display = s ? 'inline-flex' : 'none';
+      document.getElementById('crScholarModal').style.display = 'flex';
+    }
+
+    async function saveScholarFromEditor() {
+      const scholar = {
+        name: document.getElementById('cr-scholar-name').value.trim(),
+        roll: document.getElementById('cr-scholar-roll').value.trim(),
+        dob: document.getElementById('cr-scholar-dob').value.trim(),
+        email: document.getElementById('cr-scholar-email').value.trim()
+      };
+      if (!scholar.name || !scholar.roll) return toast('Name and roll number are required', true);
+      const ok = await crOp({ op: 'scholar_save', origRoll: document.getElementById('cr-scholar-orig').value, scholar }, 'Scholar saved for everyone ✓');
+      if (ok) closeModal('crScholarModal');
+    }
+
+    async function removeScholarFromEditor() {
+      const roll = document.getElementById('cr-scholar-orig').value;
+      if (!roll || !confirm('Remove this scholar from the registry?')) return;
+      const ok = await crOp({ op: 'scholar_remove', roll }, 'Scholar removed ✓');
+      if (ok) closeModal('crScholarModal');
+    }
+
+    // --- 11. SUBMISSION DOSSIERS ---
+    function renderGuidelines() {
+      const container = document.getElementById('guidelines-container');
+      if (!container) return;
+      container.innerHTML = guidelines.map(g => `
+        <div class="mag-plate dossier-card">
+          <div class="dossier-image-box">
+            <img src="${safeUrl(g.image)}" alt="${escapeHTML(g.title)}" />
+            <div style="position:absolute; top:12px; left:12px; background:#e57358; color:#fff; font-size:0.7rem; font-weight:700; padding:2px 8px; border-radius:4px;">
+              ${escapeHTML(g.subject)}
+            </div>
+          </div>
+          <div style="padding:22px; display:flex; flex-direction:column; flex:1; justify-content:space-between;">
+            <div>
+              <h3 style="font-family:var(--font-serif); font-size:1.35rem; font-weight:700; margin-bottom:8px; line-height:1.3;">${escapeHTML(g.title)}</h3>
+              <div style="background:rgba(0,0,0,0.3); border-radius:8px; padding:10px 12px; margin:8px 0; font-size:0.75rem; color:var(--text-2);">
+                ${(g.specs || []).map(sp => `<div>• <strong>${escapeHTML(sp)}</strong></div>`).join('')}
+              </div>
+              <p style="font-size:0.82rem; color:#cbd5e1; line-height:1.5; margin-bottom:12px;">${escapeHTML(g.body)}</p>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:center; padding-top:10px; border-top:1px solid rgba(255,255,255,0.06);">
+              <span style="font-size:0.72rem; color:var(--text-2); font-family:var(--font-biomorph);">AB204 Studio</span>
+              ${crTools(`triggerProtectedAction('edit_guide_${g.id}')`, `deleteGuideline(${g.id})`)}
+            </div>
+          </div>
+        </div>
+      `).join('');
+      const badge = document.getElementById('guidelines-badge-count');
+      if (badge) badge.textContent = guidelines.length;
+      applyRolePermissions();
+    }
+
+    // --- 12. DEADLINES RADAR ---
+    function renderDeadlinesTab() {
+      const grid = document.getElementById('deadlines-full-grid');
+      if (!grid) return;
+      const now = new Date();
+      grid.innerHTML = deadlines.map(d => {
+        const dueDate = new Date(d.date);
+        const diffDays = Math.ceil((dueDate - now) / (1000 * 60 * 60 * 24));
+        const isUrgent = diffDays <= 3;
+        return `
+          <div class="radar-card" style="border-left:4px solid ${isUrgent ? '#f43f5e' : 'var(--accent)'};">
+            <div>
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                <span class="c-badge c-ps3" style="width:auto; padding:3px 8px;">${escapeHTML(d.subject)}</span>
+                <span class="deadline-badge" style="background:${isUrgent ? 'rgba(244,63,94,0.3)' : 'rgba(255,255,255,0.06)'}; color:${isUrgent ? '#f43f5e' : '#f8fafc'};">
+                  Due: ${escapeHTML(d.date)}
+                </span>
+              </div>
+              <h3 style="font-family:var(--font-serif); font-size:1.25rem; font-weight:700; margin-top:4px;">${escapeHTML(d.title)}</h3>
+              <p style="font-size:0.78rem; color:var(--text-2); margin-top:4px;">${escapeHTML(d.desc || 'Milestone.')}</p>
+            </div>
+            <div>
+              <div class="countdown-display">
+                ${diffDays > 0 ? `${diffDays} Days Left` : (diffDays === 0 ? 'Due Today' : 'Overdue')}
+              </div>
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-top:8px;">
+                <span style="font-size:0.72rem; color:var(--text-2); font-family:var(--font-biomorph);">AB204 Studio</span>
+                ${crTools(`triggerProtectedAction('edit_deadline_${d.id}')`, `deleteDeadline(${d.id})`)}
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+      const badge = document.getElementById('deadlines-badge-count');
+      if (badge) badge.textContent = deadlines.length;
+      applyRolePermissions();
+    }
+
+    // --- 13. CREATIVE CORNER ---
+    function renderCreativeCorner() {
+      const container = document.getElementById('creative-corner-grid');
+      if (!container) return;
+      const fallback = 'https://images.unsplash.com/photo-1519999482648-25049ddd37b1?auto=format&fit=crop&w=800&q=80';
+      container.innerHTML = creativeWorks.map(w => `
+        <div class="mag-plate dossier-card">
+          <div class="dossier-image-box">
+            <img src="${safeUrl(w.image) || fallback}" alt="${escapeHTML(w.title)}" />
+            <div style="position:absolute; top:12px; left:12px; background:rgba(0,0,0,0.7); color:var(--cyan); font-family:var(--font-biomorph); font-size:0.7rem; padding:2px 8px; border-radius:4px;">
+              ${escapeHTML(w.category)}
+            </div>
+          </div>
+          <div style="padding:22px; display:flex; flex-direction:column; flex:1; justify-content:space-between;">
+            <div>
+              <h3 style="font-family:var(--font-serif); font-size:1.15rem; font-weight:700; margin-bottom:4px;">${escapeHTML(w.title)}</h3>
+              <div style="font-family:var(--font-biomorph); font-size:0.75rem; color:var(--accent-warm); margin-bottom:8px;">By: ${escapeHTML(w.author)}</div>
+              <p style="font-size:0.82rem; color:var(--text-2); line-height:1.5;">${escapeHTML(w.desc)}</p>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:14px; padding-top:10px; border-top:1px solid rgba(255,255,255,0.06);">
+              <button class="btn-like" onclick="likeCreativeWork(${w.id})">
+                <span>❤️</span> <span id="creative-likes-${w.id}">${w.likes || 0}</span>
+              </button>
+              <div style="display:flex; align-items:center; gap:6px;">
+                <button class="btn-editorial" style="padding:4px 10px; font-size:0.72rem;" onclick="openImageSafe(${w.id})">🔍 Expand</button>
+                ${crTools(`triggerProtectedAction('edit_creative_${w.id}')`, `deleteCreativeWork(${w.id})`)}
+              </div>
+            </div>
+          </div>
+        </div>
+      `).join('');
+      applyRolePermissions();
+    }
+
+    function openImageSafe(id) {
+      const w = creativeWorks.find(x => x.id === id);
+      const u = w && safeUrl(w.image);
+      if (u && !u.startsWith('data:')) window.open(u, '_blank', 'noopener');
+      else if (u) { const win = window.open(); if (win) { win.opener = null; win.document.write(`<img src="${u}" style="max-width:100%">`); } }
+    }
+
+    async function likeCreativeWork(id) {
+      try {
+        await actCall({ op: 'like', kind: 'creative', id });
+        const w = creativeWorks.find(x => x.id === id);
+        const el = document.getElementById(`creative-likes-${id}`);
+        if (el && w) el.textContent = w.likes || 0;
+      } catch (e) { toast(e.message, true); }
+    }
+
+    // --- 14. CLASS BLOGS ---
+    function renderClassBlogs() {
+      const container = document.getElementById('class-blogs-stream');
+      if (!container) return;
+      container.innerHTML = classBlogs.map(b => `
+        <article class="mag-plate" style="padding:22px; display:flex; flex-direction:column; justify-content:space-between;">
+          <div>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+              <span style="font-family:var(--font-biomorph); font-size:0.7rem; color:var(--cyan);">${escapeHTML(b.tag || 'Research')}</span>
+              <span style="font-family:var(--font-biomorph); font-size:0.7rem; color:var(--text-2);">${escapeHTML(b.date || 'October 2026')}</span>
+            </div>
+            <h3 style="font-family:var(--font-serif); font-size:1.35rem; font-weight:700; margin-bottom:6px; line-height:1.3;">${escapeHTML(b.title)}</h3>
+            <p style="font-size:0.84rem; color:#cbd5e1; line-height:1.6; margin-bottom:16px;">${escapeHTML(b.excerpt)}</p>
+          </div>
+          <div style="display:flex; justify-content:space-between; align-items:center; padding-top:12px; border-top:1px solid rgba(255,255,255,0.06);">
+            <span style="font-family:var(--font-biomorph); font-size:0.74rem; color:var(--accent-warm);">By ${escapeHTML(b.author)}</span>
+            <div style="display:flex; gap:6px; align-items:center;">
+              <button class="btn-like" onclick="likeBlogPost(${b.id})">
+                <span>❤</span> <span id="blog-likes-${b.id}">${b.likes || 0}</span>
+              </button>
+              <button class="btn-editorial" style="padding:4px 10px; font-size:0.72rem;" onclick="openBlogReader(${b.id})">Read ➔</button>
+              ${crTools(`triggerProtectedAction('edit_blog_${b.id}')`, `deleteBlogPost(${b.id})`)}
+            </div>
+          </div>
+        </article>
+      `).join('');
+      applyRolePermissions();
+    }
+
+    async function likeBlogPost(id) {
+      try {
+        await actCall({ op: 'like', kind: 'blog', id });
+        const b = classBlogs.find(x => x.id === id);
+        const el = document.getElementById(`blog-likes-${id}`);
+        if (el && b) el.textContent = b.likes || 0;
+      } catch (e) { toast(e.message, true); }
+    }
+
+    function openBlogReader(id) {
+      const blog = classBlogs.find(b => b.id === id);
+      if (!blog) return;
+      document.getElementById('reader-meta').textContent = `${blog.date || 'OCTOBER 2026'} • ${blog.tag || 'ESSAY'}`;
+      document.getElementById('reader-title').textContent = blog.title;
+      document.getElementById('reader-author').textContent = `By ${blog.author}`;
+      document.getElementById('reader-body').textContent = blog.body || blog.excerpt;
+      document.getElementById('blogReaderModal').style.display = 'flex';
+    }
+
+    // --- 15. SUGGESTIONS FEED ---
+    function renderSuggestionsFeed() {
+      const container = document.getElementById('suggestions-feed-container');
+      if (!container) return;
+      document.getElementById('suggestions-badge-count').textContent = suggestions.length;
+      if (!suggestions.length) {
+        container.innerHTML = `<div style="font-size:0.82rem; color:var(--text-2); padding:10px 0;">No suggestions yet. Tap "+ New Suggestion".</div>`;
+        return;
+      }
+      container.innerHTML = suggestions.map(s => {
+        const responsesHtml = (s.responses && s.responses.length) ? `
+          <div style="margin-top:10px; padding-left:12px; border-left:2px solid var(--accent); display:flex; flex-direction:column; gap:6px;">
+            ${s.responses.map((r, ri) => `
+              <div style="background:rgba(255,255,255,0.03); padding:6px 10px; border-radius:4px; font-size:0.75rem; display:flex; justify-content:space-between; align-items:flex-start; gap:8px;">
+                <span><strong style="color:var(--accent-warm);">${escapeHTML(r.author)}:</strong> ${escapeHTML(r.text)}</span>
+                ${isCRMode ? `<button class="icon-btn danger cr-only-btn" title="Delete reply" onclick="deleteReply(${s.id}, ${ri})">🗑</button>` : ''}
+              </div>
+            `).join('')}
+          </div>
+        ` : '';
+
+        return `
+          <div class="mag-plate" style="padding:16px; margin-bottom:12px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+              <span style="font-family:var(--font-biomorph); font-size:0.72rem; color:var(--cyan);">${escapeHTML(s.author)} • ${escapeHTML(s.date || 'Today')}</span>
+              <button class="btn-like" onclick="likeSuggestion(${s.id})">
+                <span>❤️</span> <span id="sugg-likes-${s.id}">${s.likes || 0}</span>
+              </button>
+            </div>
+            <h3 style="font-family:var(--font-serif); font-size:1.15rem; font-weight:700; margin-bottom:4px;">${escapeHTML(s.title)}</h3>
+            <p style="font-size:0.82rem; color:#cbd5e1; line-height:1.5;">${escapeHTML(s.body)}</p>
+
+            ${responsesHtml}
+
+            <div style="display:flex; justify-content:flex-end; gap:6px; margin-top:10px;">
+              <button class="btn-editorial" style="padding:4px 10px; font-size:0.72rem;" onclick="openReplyModal(${s.id})">💬 Reply</button>
+              ${isCRMode ? `<button class="icon-btn danger cr-only-btn" title="Delete suggestion" onclick="deleteSuggestion(${s.id})">🗑 Delete</button>` : ''}
+            </div>
+          </div>
+        `;
+      }).join('');
+      applyRolePermissions();
+    }
+
+    function openNewSuggestionModal() {
+      document.getElementById('sugg-author').value = '';
+      document.getElementById('sugg-title').value = '';
+      document.getElementById('sugg-body').value = '';
+      document.getElementById('newSuggestionModal').style.display = 'flex';
+    }
+
+    async function postSuggestion() {
+      const author = document.getElementById('sugg-author').value.trim() || 'Scholar';
+      const title = document.getElementById('sugg-title').value.trim();
+      const body = document.getElementById('sugg-body').value.trim();
+      if (!title || !body) return toast('Fill in title and details.', true);
+      try {
+        await actCall({ op: 'post_suggestion', author, title, body });
+        renderSuggestionsFeed();
+        renderCRSuggestionsManager();
+        updateBlinkingRemindersMarquee();
+        closeModal('newSuggestionModal');
+        toast('Suggestion posted for the whole class ✓');
+      } catch (e) { toast(e.message, true); }
+    }
+
+    async function likeSuggestion(id) {
+      try {
+        await actCall({ op: 'like', kind: 'suggestion', id });
+        const sugg = suggestions.find(x => x.id === id);
+        const el = document.getElementById(`sugg-likes-${id}`);
+        if (el && sugg) el.textContent = sugg.likes || 0;
+      } catch (e) { toast(e.message, true); }
+    }
+
+    function openReplyModal(id) {
+      const sugg = suggestions.find(s => s.id === id);
+      if (!sugg) return;
+      document.getElementById('reply-target-id').value = id;
+      document.getElementById('reply-target-title').textContent = `Replying to: "${sugg.title}"`;
+      document.getElementById('reply-author').value = '';
+      document.getElementById('reply-body').value = '';
+      document.getElementById('replySuggestionModal').style.display = 'flex';
+    }
+
+    async function submitReplyToSuggestion() {
+      const id = parseInt(document.getElementById('reply-target-id').value, 10);
+      const author = document.getElementById('reply-author').value.trim() || 'Studio Member';
+      const text = document.getElementById('reply-body').value.trim();
+      if (!text) return toast('Response text required.', true);
+      try {
+        await actCall({ op: 'reply', id, author, text });
+        renderSuggestionsFeed();
+        renderCRSuggestionsManager();
+        closeModal('replySuggestionModal');
+        toast('Reply posted ✓');
+      } catch (e) { toast(e.message, true); }
+    }
+
+    function renderCRSuggestionsManager() {
+      const container = document.getElementById('cr-suggestions-moderation-list');
+      if (!container) return;
+      if (!suggestions.length) {
+        container.innerHTML = `<div style="font-size:0.75rem; color:var(--text-2);">No suggestions.</div>`;
+        return;
+      }
+      container.innerHTML = suggestions.map(s => `
+        <div style="background:rgba(255,255,255,0.03); padding:8px 12px; border-radius:8px; display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+          <div>
+            <strong style="color:#fff; font-size:0.82rem;">${escapeHTML(s.title)}</strong>
+            <div style="font-size:0.7rem; color:var(--accent-warm);">${escapeHTML(s.author)} • ${s.responses ? s.responses.length : 0} replies</div>
+          </div>
+          <button class="btn-editorial" style="padding:4px 8px; font-size:0.7rem; color:#f43f5e;" onclick="deleteSuggestion(${s.id})">🗑</button>
+        </div>
+      `).join('');
+    }
+
+    async function deleteSuggestion(id) {
+      if (!ensureCR()) return;
+      if (!confirm("Remove this suggestion?")) return;
+      await crOp({ op: 'delete_suggestion', id }, 'Suggestion removed ✓');
+    }
+
+    async function deleteReply(id, index) {
+      if (!ensureCR()) return;
+      if (!confirm("Remove this reply?")) return;
+      await crOp({ op: 'delete_reply', id, index }, 'Reply removed ✓');
+    }
+
+    // --- 16. BIRTHDAY SPOTLIGHT & HUB ---
+    function updateBirthdaySpotlight() {
+      const now = new Date();
+      const curYear = now.getFullYear();
+      let nearestScholar = scholars[0] || null;
+      let minDiffDays = 9999;
+      let isBirthdayToday = false;
+
+      scholars.forEach(s => {
+        if (!s.dob) return;
+        const parts = s.dob.split('/');
+        if (parts.length < 2) return;
+        const day = parseInt(parts[0], 10);
+        const month = parseInt(parts[1], 10) - 1;
+
+        let bdayThisYear = new Date(curYear, month, day);
+        let bdayNextYear = new Date(curYear + 1, month, day);
+        let todayMid = new Date(curYear, now.getMonth(), now.getDate());
+
+        let targetBday = (bdayThisYear >= todayMid) ? bdayThisYear : bdayNextYear;
+        const diff = Math.round((targetBday - todayMid) / (1000 * 60 * 60 * 24));
+
+        if (diff < minDiffDays) {
+          minDiffDays = diff;
+          nearestScholar = s;
+          isBirthdayToday = (diff === 0);
+        }
+      });
+
+      if (nearestScholar) {
+        document.getElementById('spotlight-name').textContent = nearestScholar.name;
+        document.getElementById('spotlight-roll').textContent = nearestScholar.roll;
+        document.getElementById('spotlight-dob').textContent = `DOB: ${nearestScholar.dob}`;
+        const avatarBox = document.getElementById('spotlight-avatar');
+        if (safeUrl(nearestScholar.photo)) {
+          avatarBox.innerHTML = `<img src="${safeUrl(nearestScholar.photo)}" alt="${escapeHTML(nearestScholar.name)}" />`;
+        } else {
+          avatarBox.textContent = nearestScholar.name.charAt(0);
+        }
+        const countBox = document.getElementById('spotlight-countdown');
+        countBox.innerHTML = isBirthdayToday ? `<strong style="color:#22c55e;">🎉 Birthday Today!</strong>` : `In ${minDiffDays} day${minDiffDays > 1 ? 's' : ''}!`;
+      }
+    }
+
+    function renderHubContent() {
+      const aList = document.getElementById('announcements-list');
+      if (aList) {
+        aList.innerHTML = announcements.map(a => `
+          <div class="entry-card">
+            <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:6px;">
+              <div class="entry-headline">${escapeHTML(a.title)}</div>
+              ${crTools(`triggerProtectedAction('edit_notice_${a.id}')`, `deleteNotice(${a.id})`)}
+            </div>
+            <div class="entry-desc">${escapeHTML(a.desc)}</div>
+          </div>
+        `).join('');
+      }
+
+      const dList = document.getElementById('deadlines-list-overview');
+      if (dList) {
+        dList.innerHTML = deadlines.slice(0, 4).map(d => `
+          <div class="entry-card deadline-row-item">
+            <div>
+              <div class="entry-headline">${escapeHTML(d.title)}</div>
+              <div style="font-size:0.75rem; color:var(--accent-warm); font-family:var(--font-biomorph); font-weight:700;">${escapeHTML(d.subject)}</div>
+            </div>
+            <div style="display:flex; align-items:center; gap:4px;">
+              <span class="deadline-badge">${escapeHTML(d.date)}</span>
+              ${crTools(`triggerProtectedAction('edit_deadline_${d.id}')`, `deleteDeadline(${d.id})`)}
+            </div>
+          </div>
+        `).join('');
+      }
+      applyRolePermissions();
+    }
+
+    // --- 17. CLASS PORTRAIT & CALENDAR ---
+    function loadClassPhoto() {
+      const img = document.getElementById('class-portrait-img');
+      const placeholder = document.getElementById('class-photo-placeholder');
+      if (!img || !placeholder) return;
+      if (classPhoto) {
+        img.src = classPhoto;
+        img.style.display = 'block';
+        placeholder.style.display = 'none';
+      } else {
+        img.style.display = 'none';
+        placeholder.style.display = 'block';
+      }
+    }
+
+    async function handleClassPhotoUpload(e) {
+      const file = e.target.files[0];
+      e.target.value = '';
+      if (!file) return;
+      if (!ensureCR()) return;
+      try {
+        classPhoto = await resizeImageFile(file, 1400, 0.8);
+        loadClassPhoto();
+        await crSave(['classPhoto'], 'Class portrait updated for everyone ✓');
+        updateBlinkingRemindersMarquee();
+      } catch (err) { toast('Could not process that image', true); await loadState(true); }
+    }
+
+    function renderAcademicCalendar() {
+      const cal = document.getElementById('academic-calendar');
+      if (!cal) return;
+      cal.innerHTML = '';
+      const now = new Date();
+      const year = now.getFullYear();
+      const month = now.getMonth();
+      const todayDate = now.getDate();
+      const daysOfWeek = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+      daysOfWeek.forEach(d => {
+        const header = document.createElement('div');
+        header.className = 'cal-head-day';
+        header.textContent = d;
+        cal.appendChild(header);
+      });
+
+      const firstDayIndex = new Date(year, month, 1).getDay();
+      const totalDays = new Date(year, month + 1, 0).getDate();
+
+      for (let i = 0; i < firstDayIndex; i++) {
+        cal.appendChild(document.createElement('div'));
+      }
+
+      for (let day = 1; day <= totalDays; day++) {
+        const cell = document.createElement('div');
+        cell.className = 'cal-day-cell';
+        if (day === todayDate) cell.classList.add('cal-today');
+
+        const dayFormatted = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+        const hasNotice = announcements.some(a => a.date === dayFormatted);
+        const hasDeadline = deadlines.some(d => d.date === dayFormatted);
+
+        let indicatorsHtml = '<div class="cal-dots-row">';
+        if (hasNotice) indicatorsHtml += '<span class="dot-n" title="Notice"></span>';
+        if (hasDeadline) indicatorsHtml += '<span class="dot-d" title="Deadline"></span>';
+        indicatorsHtml += '</div>';
+
+        cell.innerHTML = `<span>${day}</span>${indicatorsHtml}`;
+        cell.onclick = () => inspectCalendarDate(dayFormatted, day);
+        cal.appendChild(cell);
+      }
+    }
+
+    function inspectCalendarDate(dateStr, dayNum) {
+      const infoBox = document.getElementById('calendar-day-info');
+      if (!infoBox) return;
+      const matchedNotices = announcements.filter(a => a.date === dateStr);
+      const matchedDeadlines = deadlines.filter(d => d.date === dateStr);
+      if (!matchedNotices.length && !matchedDeadlines.length) {
+        infoBox.innerHTML = `<strong>Day ${dayNum}:</strong> No active notices or deadlines on this date.`;
+        return;
+      }
+      let html = `<strong>Events on ${dateStr}:</strong><br>`;
+      matchedNotices.forEach(n => html += `• Notice: ${escapeHTML(n.title)}<br>`);
+      matchedDeadlines.forEach(d => html += `• Due: [${d.subject}] ${escapeHTML(d.title)}<br>`);
+      infoBox.innerHTML = html;
+    }
+
+    // --- 18. CR SUITE ACTIONS & MODALS ---
+    let pendingAction = null;
+
+    function openCRAuthModal(action = null) {
+      if (!isCRMode) return;
+      pendingAction = action;
+      if (crPass) { proceedToCRAction(); return; }
+      document.getElementById('cr-passcode-input').value = '';
+      document.getElementById('cr-auth-error').style.display = 'none';
+      document.getElementById('crAuthModal').style.display = 'flex';
+      setTimeout(() => { const i = document.getElementById('cr-passcode-input'); if (i) i.focus(); }, 50);
+    }
+
+    async function verifyCRAuth() {
+      const entered = document.getElementById('cr-passcode-input').value;
+      const errEl = document.getElementById('cr-auth-error');
+      const btn = document.getElementById('cr-unlock-btn');
+      if (!entered) return;
+      errEl.style.display = 'none';
+      if (btn) { btn.disabled = true; btn.textContent = 'Checking…'; }
+      try {
+        const { res } = await postJSON('/api/verify', { passcode: entered });
+        if (res.ok) {
+          crPass = entered;
+          sessionStorage.setItem('plaxus_cr_pass', crPass);
+          closeModal('crAuthModal');
+          await loadState(true);
+          proceedToCRAction();
+        } else if (res.status === 401) {
+          errEl.textContent = 'Incorrect passcode.';
+          errEl.style.display = 'block';
+        } else {
+          errEl.textContent = 'Cloud backend is not reachable yet. Check the deployment.';
+          errEl.style.display = 'block';
+        }
+      } catch (e) {
+        errEl.textContent = e.message || 'Could not reach the server.';
+        errEl.style.display = 'block';
+      } finally {
+        if (btn) { btn.disabled = false; btn.textContent = 'Unlock'; }
+      }
+    }
+
+    function proceedToCRAction() {
+      const a = pendingAction;
+      pendingAction = null;
+      if (a === 'login_only') return;
+      if (a === 'uploadClassPhoto') {
+        document.getElementById('class-photo-input').click();
+      } else if (a && a.startsWith('tab_')) {
+        openCRSuiteModal();
+        switchCRTab(a.replace('tab_', ''));
+      } else if (a && a.startsWith('edit_deadline_')) {
+        const id = parseInt(a.replace('edit_deadline_', ''), 10);
+        openCRSuiteModal(); switchCRTab('manage-deadlines'); loadDeadlineForEdit(id);
+      } else if (a && a.startsWith('edit_guide_')) {
+        const id = parseInt(a.replace('edit_guide_', ''), 10);
+        openCRSuiteModal(); switchCRTab('manage-guidelines'); loadGuidelineForEdit(id);
+      } else if (a && a.startsWith('edit_notice_')) {
+        const id = parseInt(a.replace('edit_notice_', ''), 10);
+        openCRSuiteModal(); switchCRTab('manage-notices'); loadNoticeForEdit(id);
+      } else if (a && a.startsWith('edit_creative_')) {
+        const id = parseInt(a.replace('edit_creative_', ''), 10);
+        openCRSuiteModal(); switchCRTab('manage-creative'); loadCreativeForEdit(id);
+      } else if (a && a.startsWith('edit_blog_')) {
+        const id = parseInt(a.replace('edit_blog_', ''), 10);
+        openCRSuiteModal(); switchCRTab('manage-blogs'); loadBlogForEdit(id);
+      } else {
+        openCRSuiteModal();
+      }
+    }
+
+    function triggerProtectedAction(action) {
+      openCRAuthModal(action);
+    }
+
+    function openCRSuiteWithTab(tabName) {
+      openCRAuthModal('tab_' + tabName);
+    }
+
+    function openCRSuiteModal() {
+      document.getElementById('cr-marquee-input').value = marqueeText;
+      document.getElementById('cr-wallpaper-url').value = userBg;
+      document.getElementById('crSuiteModal').style.display = 'flex';
+      renderCRDeadlinesManager();
+      renderCRGuidelinesManager();
+      renderCRCreativeManager();
+      renderCRBlogsManager();
+      renderCRSuggestionsManager();
+      renderCRNoticesManager();
+      loadDaySlotsIntoEditor();
+      generateWhatsAppSummaryText();
+    }
+
+    function switchCRTab(tab) {
+      const map = {
+        'manage-deadlines': 'cr-tab-deadlines',
+        'manage-guidelines': 'cr-tab-guidelines',
+        'manage-creative': 'cr-tab-creative',
+        'manage-blogs': 'cr-tab-blogs',
+        'manage-suggestions': 'cr-tab-suggestions',
+        'manage-notices': 'cr-tab-notices',
+        'modify-tt': 'cr-tab-tt',
+        'broadcast': 'cr-tab-broadcast',
+        'settings': 'cr-tab-settings'
+      };
+      Object.keys(map).forEach(t => {
+        const el = document.getElementById(map[t]);
+        if (el) el.style.display = (t === tab) ? 'block' : 'none';
+      });
+      if (tab === 'broadcast') generateWhatsAppSummaryText();
+    }
+
+    function renderCRDeadlinesManager() {
+      const container = document.getElementById('cr-deadlines-list-manager');
+      if (!container) return;
+      if (!deadlines.length) {
+        container.innerHTML = `<div style="font-size:0.75rem; color:var(--text-2);">No deadlines.</div>`;
+        return;
+      }
+      container.innerHTML = deadlines.map(d => `
+        <div style="background:rgba(255,255,255,0.03); padding:8px 12px; border-radius:8px; display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+          <div>
+            <strong style="color:#fff; font-size:0.82rem;">[${d.subject}] ${escapeHTML(d.title)}</strong>
+            <div style="font-size:0.7rem; color:var(--accent-warm);">${d.date}</div>
+          </div>
+          <div style="display:flex; gap:4px;">
+            <button class="btn-editorial" style="padding:3px 8px; font-size:0.68rem;" onclick="loadDeadlineForEdit(${d.id})">✏</button>
+            <button class="btn-editorial" style="padding:3px 8px; font-size:0.68rem; color:#f43f5e;" onclick="deleteDeadline(${d.id})">🗑</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function loadDeadlineForEdit(id) {
+      const item = deadlines.find(d => d.id === id);
+      if (!item) return;
+      document.getElementById('cr-deadline-id').value = item.id;
+      document.getElementById('cr-deadline-title').value = item.title;
+      document.getElementById('cr-deadline-subject').value = item.subject;
+      document.getElementById('cr-deadline-date').value = item.date;
+      document.getElementById('cr-deadline-desc').value = item.desc || '';
+      document.getElementById('deadline-form-heading').textContent = "Modify Deadline";
+      document.getElementById('save-deadline-btn').textContent = "Update & Sync";
+      document.getElementById('cancel-deadline-edit-btn').style.display = 'inline-block';
+    }
+
+    function resetDeadlineForm() {
+      document.getElementById('cr-deadline-id').value = '';
+      document.getElementById('cr-deadline-title').value = '';
+      document.getElementById('cr-deadline-date').value = '';
+      document.getElementById('cr-deadline-desc').value = '';
+      document.getElementById('deadline-form-heading').textContent = "Create / Modify Deadline";
+      document.getElementById('save-deadline-btn').textContent = "Save & Sync";
+      document.getElementById('cancel-deadline-edit-btn').style.display = 'none';
+    }
+
+    async function saveOrUpdateDeadline() {
+      if (!ensureCR()) return;
+      const id = document.getElementById('cr-deadline-id').value;
+      const title = document.getElementById('cr-deadline-title').value.trim();
+      const subject = document.getElementById('cr-deadline-subject').value;
+      const date = document.getElementById('cr-deadline-date').value;
+      const desc = document.getElementById('cr-deadline-desc').value.trim() || 'Milestone.';
+      if (!title || !date) return toast("Title and date required", true);
+
+      if (id) {
+        const index = deadlines.findIndex(d => d.id === parseInt(id, 10));
+        if (index !== -1) deadlines[index] = { id: parseInt(id, 10), title, subject, date, desc };
+      } else {
+        deadlines.push({ id: Date.now(), title, subject, date, desc });
+      }
+      if (await crSave(['deadlines'])) resetDeadlineForm();
+    }
+
+    async function deleteDeadline(id) {
+      if (!ensureCR()) return;
+      if (!confirm("Remove deadline?")) return;
+      deadlines = deadlines.filter(d => d.id !== id);
+      await crSave(['deadlines'], 'Deadline removed ✓');
+    }
+
+    function renderCRGuidelinesManager() {
+      const container = document.getElementById('cr-guidelines-list-manager');
+      if (!container) return;
+      if (!guidelines.length) {
+        container.innerHTML = `<div style="font-size:0.75rem; color:var(--text-2);">No profiles.</div>`;
+        return;
+      }
+      container.innerHTML = guidelines.map(g => `
+        <div style="background:rgba(255,255,255,0.03); padding:8px 12px; border-radius:8px; display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+          <div><strong style="color:#fff; font-size:0.8rem;">[${g.subject}] ${escapeHTML(g.title)}</strong></div>
+          <div style="display:flex; gap:4px;">
+            <button class="btn-editorial" style="padding:3px 8px; font-size:0.68rem;" onclick="loadGuidelineForEdit(${g.id})">✏</button>
+            <button class="btn-editorial" style="padding:3px 8px; font-size:0.68rem; color:#f43f5e;" onclick="deleteGuideline(${g.id})">🗑</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function loadGuidelineForEdit(id) {
+      const item = guidelines.find(g => g.id === id);
+      if (!item) return;
+      document.getElementById('cr-guide-id').value = item.id;
+      document.getElementById('cr-guide-subject').value = item.subject;
+      document.getElementById('cr-guide-title').value = item.title;
+      document.getElementById('cr-guide-image').value = item.image || '';
+      document.getElementById('cr-guide-specs').value = (item.specs || []).join(', ');
+      document.getElementById('cr-guide-body').value = item.body;
+      document.getElementById('guideline-form-heading').textContent = "Modify Dossier";
+      document.getElementById('save-guide-btn').textContent = "Update & Sync";
+      document.getElementById('cancel-guide-edit-btn').style.display = 'inline-block';
+    }
+
+    function resetGuidelineForm() {
+      document.getElementById('cr-guide-id').value = '';
+      document.getElementById('cr-guide-title').value = '';
+      document.getElementById('cr-guide-image').value = '';
+      document.getElementById('cr-guide-specs').value = '';
+      document.getElementById('cr-guide-body').value = '';
+      document.getElementById('guideline-form-heading').textContent = "Create / Modify Dossier";
+      document.getElementById('save-guide-btn').textContent = "Save & Sync";
+      document.getElementById('cancel-guide-edit-btn').style.display = 'none';
+    }
+
+    async function saveOrUpdateGuideline() {
+      if (!ensureCR()) return;
+      const id = document.getElementById('cr-guide-id').value;
+      const subject = document.getElementById('cr-guide-subject').value;
+      const title = document.getElementById('cr-guide-title').value.trim();
+      const image = document.getElementById('cr-guide-image').value.trim() || 'https://images.unsplash.com/photo-1524813686514-a57563d77d66?auto=format&fit=crop&w=800&q=80';
+      const specsRaw = document.getElementById('cr-guide-specs').value.trim();
+      const body = document.getElementById('cr-guide-body').value.trim();
+
+      if (!title || !body) return toast("Title and details required", true);
+      const specs = specsRaw ? specsRaw.split(',').map(s => s.trim()).filter(Boolean) : ["A1 Landscape"];
+
+      if (id) {
+        const index = guidelines.findIndex(g => g.id === parseInt(id, 10));
+        if (index !== -1) guidelines[index] = { id: parseInt(id, 10), subject, title, image, specs, body };
+      } else {
+        guidelines.push({ id: Date.now(), subject, title, image, specs, body });
+      }
+      if (await crSave(['guidelines'])) resetGuidelineForm();
+    }
+
+    async function deleteGuideline(id) {
+      if (!ensureCR()) return;
+      if (!confirm("Remove dossier?")) return;
+      guidelines = guidelines.filter(g => g.id !== id);
+      await crSave(['guidelines'], 'Dossier removed ✓');
+    }
+
+    function renderCRCreativeManager() {
+      const container = document.getElementById('cr-creative-list-manager');
+      if (!container) return;
+      if (!creativeWorks.length) {
+        container.innerHTML = `<div style="font-size:0.75rem; color:var(--text-2);">No creative works.</div>`;
+        return;
+      }
+      container.innerHTML = creativeWorks.map(w => `
+        <div style="background:rgba(255,255,255,0.03); padding:8px 12px; border-radius:8px; display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+          <div>
+            <strong style="color:#fff; font-size:0.82rem;">${escapeHTML(w.title)}</strong>
+            <div style="font-size:0.7rem; color:var(--accent-warm);">${escapeHTML(w.author)} • ${w.likes || 0} likes</div>
+          </div>
+          <div style="display:flex; gap:4px;">
+            <button class="btn-editorial" style="padding:3px 8px; font-size:0.68rem;" onclick="loadCreativeForEdit(${w.id})">✏</button>
+            <button class="btn-editorial" style="padding:3px 8px; font-size:0.68rem; color:#f43f5e;" onclick="deleteCreativeWork(${w.id})">🗑</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function loadCreativeForEdit(id) {
+      const w = creativeWorks.find(x => x.id === id);
+      if (!w) return;
+      document.getElementById('cr-creative-id').value = w.id;
+      document.getElementById('cr-creative-title').value = w.title || '';
+      document.getElementById('cr-creative-author').value = w.author || '';
+      document.getElementById('cr-creative-cat').value = w.category || 'Cartography & GIS';
+      document.getElementById('cr-creative-image').value = w.image || '';
+      document.getElementById('cr-creative-desc').value = w.desc || '';
+      document.getElementById('creative-form-heading').textContent = 'Modify Creative Sheet';
+      document.getElementById('save-creative-btn').textContent = 'Update & Sync';
+      document.getElementById('cancel-creative-edit-btn').style.display = 'inline-block';
+    }
+
+    function resetCreativeForm() {
+      ['id', 'title', 'author', 'image', 'desc'].forEach(f => { document.getElementById('cr-creative-' + f).value = ''; });
+      document.getElementById('creative-form-heading').textContent = 'Pin Creative Sheet';
+      document.getElementById('save-creative-btn').textContent = 'Pin Work & Sync';
+      document.getElementById('cancel-creative-edit-btn').style.display = 'none';
+    }
+
+    async function saveCreativeWork() {
+      if (!ensureCR()) return;
+      const id = document.getElementById('cr-creative-id').value;
+      const title = document.getElementById('cr-creative-title').value.trim();
+      const author = document.getElementById('cr-creative-author').value.trim();
+      const category = document.getElementById('cr-creative-cat').value;
+      const image = document.getElementById('cr-creative-image').value.trim() || 'https://images.unsplash.com/photo-1519999482648-25049ddd37b1?auto=format&fit=crop&w=800&q=80';
+      const desc = document.getElementById('cr-creative-desc').value.trim() || 'Design sheet.';
+
+      if (!title || !author) return toast("Title and author required", true);
+      if (id) {
+        const idx = creativeWorks.findIndex(w => w.id === parseInt(id, 10));
+        if (idx !== -1) creativeWorks[idx] = Object.assign({}, creativeWorks[idx], { title, author, category, image, desc });
+      } else {
+        creativeWorks.push({ id: Date.now(), title, author, category, image, desc, likes: 0 });
+      }
+      if (await crSave(['creativeWorks'])) { resetCreativeForm(); closeModal('crSuiteModal'); }
+    }
+
+    async function deleteCreativeWork(id) {
+      if (!ensureCR()) return;
+      if (!confirm("Remove sheet?")) return;
+      creativeWorks = creativeWorks.filter(w => w.id !== id);
+      await crSave(['creativeWorks'], 'Sheet removed ✓');
+    }
+
+    function renderCRBlogsManager() {
+      const container = document.getElementById('cr-blogs-list-manager');
+      if (!container) return;
+      if (!classBlogs.length) {
+        container.innerHTML = `<div style="font-size:0.75rem; color:var(--text-2);">No blogs.</div>`;
+        return;
+      }
+      container.innerHTML = classBlogs.map(b => `
+        <div style="background:rgba(255,255,255,0.03); padding:8px 12px; border-radius:8px; display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+          <div>
+            <strong style="color:#fff; font-size:0.82rem;">${escapeHTML(b.title)}</strong>
+            <div style="font-size:0.7rem; color:var(--accent-warm);">${escapeHTML(b.author)}</div>
+          </div>
+          <div style="display:flex; gap:4px;">
+            <button class="btn-editorial" style="padding:3px 8px; font-size:0.68rem;" onclick="loadBlogForEdit(${b.id})">✏</button>
+            <button class="btn-editorial" style="padding:3px 8px; font-size:0.68rem; color:#f43f5e;" onclick="deleteBlogPost(${b.id})">🗑</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function loadBlogForEdit(id) {
+      const b = classBlogs.find(x => x.id === id);
+      if (!b) return;
+      document.getElementById('cr-blog-id').value = b.id;
+      document.getElementById('cr-blog-title').value = b.title || '';
+      document.getElementById('cr-blog-author').value = b.author || '';
+      document.getElementById('cr-blog-tag').value = b.tag || '';
+      document.getElementById('cr-blog-body').value = b.body || b.excerpt || '';
+      document.getElementById('blog-form-heading').textContent = 'Modify Article';
+      document.getElementById('save-blog-btn').textContent = 'Update & Sync';
+      document.getElementById('cancel-blog-edit-btn').style.display = 'inline-block';
+    }
+
+    function resetBlogForm() {
+      ['id', 'title', 'author', 'tag', 'body'].forEach(f => { document.getElementById('cr-blog-' + f).value = ''; });
+      document.getElementById('blog-form-heading').textContent = 'Publish Article';
+      document.getElementById('save-blog-btn').textContent = 'Publish & Sync';
+      document.getElementById('cancel-blog-edit-btn').style.display = 'none';
+    }
+
+    async function saveBlogPost() {
+      if (!ensureCR()) return;
+      const id = document.getElementById('cr-blog-id').value;
+      const title = document.getElementById('cr-blog-title').value.trim();
+      const author = document.getElementById('cr-blog-author').value.trim() || 'CR Desk';
+      const tag = document.getElementById('cr-blog-tag').value.trim() || 'Reflection';
+      const body = document.getElementById('cr-blog-body').value.trim();
+      if (!title || !body) return toast("Title and body required", true);
+
+      const excerpt = body.length > 120 ? body.slice(0, 120) + '...' : body;
+      if (id) {
+        const idx = classBlogs.findIndex(b => b.id === parseInt(id, 10));
+        if (idx !== -1) classBlogs[idx] = Object.assign({}, classBlogs[idx], { title, author, tag, excerpt, body });
+      } else {
+        const date = new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+        classBlogs.unshift({ id: Date.now(), title, author, tag, date, excerpt, body, likes: 0 });
+      }
+      if (await crSave(['classBlogs'])) { resetBlogForm(); closeModal('crSuiteModal'); }
+    }
+
+    async function deleteBlogPost(id) {
+      if (!ensureCR()) return;
+      if (!confirm("Remove reflection?")) return;
+      classBlogs = classBlogs.filter(b => b.id !== id);
+      await crSave(['classBlogs'], 'Article removed ✓');
+    }
+
+    function renderCRNoticesManager() {
+      const container = document.getElementById('cr-notices-list-manager');
+      if (!container) return;
+      if (!announcements.length) {
+        container.innerHTML = `<div style="font-size:0.75rem; color:var(--text-2);">No notices.</div>`;
+        return;
+      }
+      container.innerHTML = announcements.map(a => `
+        <div style="background:rgba(255,255,255,0.03); padding:8px 12px; border-radius:8px; display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+          <div>
+            <strong style="color:#fff; font-size:0.82rem;">${escapeHTML(a.title)}</strong>
+            <div style="font-size:0.7rem; color:var(--text-2);">${escapeHTML(a.date)}</div>
+          </div>
+          <div style="display:flex; gap:4px;">
+            <button class="btn-editorial" style="padding:3px 8px; font-size:0.68rem;" onclick="loadNoticeForEdit(${a.id})">✏</button>
+            <button class="btn-editorial" style="padding:3px 8px; font-size:0.68rem; color:#f43f5e;" onclick="deleteNotice(${a.id})">🗑</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function loadNoticeForEdit(id) {
+      const item = announcements.find(a => a.id === id);
+      if (!item) return;
+      document.getElementById('cr-notice-id').value = item.id;
+      document.getElementById('cr-notice-title').value = item.title;
+      document.getElementById('cr-notice-desc').value = item.desc;
+    }
+
+    function resetNoticeForm() {
+      document.getElementById('cr-notice-id').value = '';
+      document.getElementById('cr-notice-title').value = '';
+      document.getElementById('cr-notice-desc').value = '';
+    }
+
+    async function saveOrUpdateNotice() {
+      if (!ensureCR()) return;
+      const id = document.getElementById('cr-notice-id').value;
+      const title = document.getElementById('cr-notice-title').value.trim();
+      const desc = document.getElementById('cr-notice-desc').value.trim();
+      const date = new Date().toISOString().split('T')[0];
+      if (!title) return toast("Headline required", true);
+
+      if (id) {
+        const index = announcements.findIndex(a => a.id === parseInt(id, 10));
+        if (index !== -1) announcements[index] = { id: parseInt(id, 10), title, desc, date: announcements[index].date || date };
+      } else {
+        announcements.unshift({ id: Date.now(), title, desc, date });
+      }
+      if (await crSave(['announcements'])) resetNoticeForm();
+    }
+
+    async function deleteNotice(id) {
+      if (!ensureCR()) return;
+      if (!confirm("Remove notice?")) return;
+      announcements = announcements.filter(a => a.id !== id);
+      await crSave(['announcements'], 'Notice removed ✓');
+    }
+
+    function loadDaySlotsIntoEditor() {
+      const day = document.getElementById('cr-tt-day').value;
+      const slots = timetable[day] || defaultTimetable[day];
+      const container = document.getElementById('cr-tt-slots-editor');
+      if (!container) return;
+      container.innerHTML = slots.map((s, idx) => `
+        <div class="form-unit">
+          <label style="font-size:0.65rem;">Slot ${idx+1}</label>
+          <input type="text" class="input-field" style="padding:6px; font-size:0.75rem;" id="tt-slot-${idx}" maxlength="40" value="${escapeHTML(s)}" />
+        </div>
+      `).join('');
+    }
+
+    async function saveDayTimetableChanges() {
+      if (!ensureCR()) return;
+      const day = document.getElementById('cr-tt-day').value;
+      const updatedSlots = [];
+      for (let i = 0; i < 9; i++) {
+        updatedSlots.push(document.getElementById(`tt-slot-${i}`).value.trim() || '-');
+      }
+      timetable[day] = updatedSlots;
+      if (await crSave(['timetable'], 'Timetable updated for everyone ✓')) {
+        updateCockpitHours();
+        closeModal('crSuiteModal');
+      }
+    }
+
+    function generateWhatsAppSummaryText() {
+      const now = new Date();
+      const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+      const todayDay = dayNames[now.getDay()];
+      const todayDateStr = now.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+
+      let slots = timetable[todayDay] || defaultTimetable[todayDay] || [];
+      let timetableSummary = slots.length ? slots.map((s, idx) => `Slot ${idx+1}: ${s}`).join('\n') : "No classes today.";
+
+      let latestNotices = announcements.slice(0, 2).map(a => `• ${a.title}`).join('\n') || "None";
+      let latestDeadlines = deadlines.slice(0, 4).map(d => `• [${d.subject}] ${d.title} (Due: ${d.date})`).join('\n') || "None";
+
+      const text = `🏛 *PLAXUS M25 STUDIO MONOGRAPH DISPATCH*\n📅 *${todayDay}, ${todayDateStr}*\n\n📚 *Today's Timetable:*\n${timetableSummary}\n\n📢 *Notices:*\n${latestNotices}\n\n⏳ *Upcoming Deadlines:*\n${latestDeadlines}\n\n🔗 _Open Studio Dashboard AB204:_`;
+
+      const target = document.getElementById('cr-wa-preview-text');
+      if (target) target.value = text;
+      return text;
+    }
+
+    function dispatchWhatsAppFromCR() {
+      const text = generateWhatsAppSummaryText();
+      const message = encodeURIComponent(`${text}\n${classLinkUrl()}`);
+      window.open(`https://api.whatsapp.com/send?text=${message}`, '_blank');
+    }
+
+    async function saveCRSettings() {
+      if (!ensureCR()) return;
+      const newM = document.getElementById('cr-marquee-input').value.trim();
+      const newBg = document.getElementById('cr-wallpaper-url').value.trim();
+      const newPass = document.getElementById('cr-new-passcode').value.trim();
+
+      if (newBg && !safeUrl(newBg)) return toast('Wallpaper must be an http(s) image URL', true);
+      if (newPass && newPass.length < 4) return toast('Passcode must be at least 4 characters', true);
+
+      if (newM) marqueeText = newM;
+      userBg = newBg; // blank clears the wallpaper
+
+      if (!(await crSave(['marqueeText', 'userBg'], 'Settings saved for everyone ✓'))) return;
+
+      if (newPass) {
+        try {
+          await crCall({ op: 'set_passcode', newPasscode: newPass });
+          crPass = newPass;
+          sessionStorage.setItem('plaxus_cr_pass', crPass);
+          document.getElementById('cr-new-passcode').value = '';
+          toast('Settings and new passcode saved ✓');
+        } catch (e) { toast(e.message || 'Could not change passcode', true); return; }
+      }
+      document.getElementById('custom-user-bg').style.backgroundImage = userBg ? `url('${userBg}')` : 'none';
+      closeModal('crSuiteModal');
+    }
+
+    function closeModal(id) {
+      const modal = document.getElementById(id);
+      if (modal) modal.style.display = 'none';
+    }
+
+    function fireConfettiCannon() {
+      const canvas = document.getElementById('confetti-canvas');
+      const ctx = canvas.getContext('2d');
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      const particles = [];
+      const colors = ['#e57358', '#f3a075', '#22c55e', '#3b82f6', '#f43f5e', '#eab308'];
+
+      for (let i = 0; i < 70; i++) {
+        particles.push({
+          x: canvas.width / 2,
+          y: canvas.height * 0.45,
+          vx: (Math.random() - 0.5) * 14,
+          vy: (Math.random() - 0.8) * 14,
+          size: Math.random() * 7 + 3,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          rotation: Math.random() * 360,
+          vRot: (Math.random() - 0.5) * 10,
+          opacity: 1
+        });
+      }
+
+      function renderParticles() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        let active = false;
+
+        particles.forEach(p => {
+          p.x += p.vx;
+          p.y += p.vy;
+          p.vy += 0.35;
+          p.rotation += p.vRot;
+          p.opacity -= 0.014;
+
+          if (p.opacity > 0) {
+            active = true;
+            ctx.save();
+            ctx.translate(p.x, p.y);
+            ctx.rotate((p.rotation * Math.PI) / 180);
+            ctx.fillStyle = p.color;
+            ctx.globalAlpha = p.opacity;
+            ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size * 0.7);
+            ctx.restore();
+          }
+        });
+
+        if (active) requestAnimationFrame(renderParticles);
+        else ctx.clearRect(0, 0, canvas.width, canvas.height);
+      }
+      renderParticles();
+    }
+
+    function escapeHTML(str) {
+      return (str || '').replace(/[&<>'"]/g, 
+        tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
+      );
+    }
+
+    // --- 19. CENTRAL RENDER DISPATCHER ---
+    function renderEverything() {
+      document.getElementById('marquee-text-content').textContent = marqueeText;
+      document.getElementById('custom-user-bg').style.backgroundImage = safeUrl(userBg) ? `url('${safeUrl(userBg)}')` : 'none';
+      updateClock();
+      try { renderTimetable(); } catch(e) { console.error('Timetable render error:', e); }
+      try { renderScholars(); } catch(e) { console.error('Scholars render error:', e); }
+      try { renderGuidelines(); } catch(e) { console.error('Guidelines render error:', e); }
+      try { renderDeadlinesTab(); } catch(e) { console.error('Deadlines render error:', e); }
+      try { renderCreativeCorner(); } catch(e) { console.error('Creative render error:', e); }
+      try { renderClassBlogs(); } catch(e) { console.error('Blogs render error:', e); }
+      try { renderSuggestionsFeed(); } catch(e) { console.error('Suggestions render error:', e); }
+      try { updateBirthdaySpotlight(); } catch(e) { console.error('Spotlight render error:', e); }
+      try { renderHubContent(); } catch(e) { console.error('Hub render error:', e); }
+      try { loadClassPhoto(); } catch(e) { console.error('Photo render error:', e); }
+      try { renderAcademicCalendar(); } catch(e) { console.error('Calendar render error:', e); }
+      try { updateBlinkingRemindersMarquee(); } catch(e) { console.error('Marquee render error:', e); }
+      try { updateCockpitHours(); } catch(e) { console.error('Cockpit render error:', e); }
+      applyRolePermissions();
+    }
+
+    // --- 20. STARTUP DISPATCH ---
+    document.addEventListener('DOMContentLoaded', () => {
+      applyRolePermissions();   // class link: strips every CR control from the page
+      renderEverything();
+      if (isCRMode) {
+        document.title = 'PLAXUS M25 — CR Desk';
+        if (!crPass) openCRAuthModal('login_only');
+      }
+      startLivePolling();
+    });
+  </script>
+</body>
+</html>
